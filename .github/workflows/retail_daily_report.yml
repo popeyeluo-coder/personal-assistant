@@ -1,22 +1,26 @@
 name: 零售日报自动发送
 
 on:
-  # 定时触发 - 每天北京时间8:00 = UTC 0:00
   schedule:
-    - cron: '0 0 * * *'
-  
-  # 允许手动触发
+    # 每天北京时间8:00运行 (UTC 0:00)
+    - cron: '5 0 * * *'
+    # 每天北京时间8:30自检 (UTC 0:30)
+    - cron: '35 0 * * *'
   workflow_dispatch:
-
-# 并发控制
-concurrency:
-  group: retail-daily-report
-  cancel-in-progress: false
+    inputs:
+      action:
+        description: '执行操作'
+        required: true
+        default: 'send'
+        type: choice
+        options:
+          - send
+          - self-check
 
 jobs:
-  send_retail_daily_report:
+  send_daily_report:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'send' || github.event_name == 'schedule' && github.event.schedule == '5 0 * * *'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     
     steps:
       - name: 检出代码
@@ -26,33 +30,131 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
       
       - name: 安装依赖
         run: |
           cd retail_daily_report
           pip install -r requirements.txt
       
-      - name: 运行零售日报生成
-        id: run_report
-        run: |
-          cd retail_daily_report
-          python main.py --run-now
+      - name: 运行零售日报
         env:
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           RECEIVER_EMAILS: ${{ secrets.RECEIVER_EMAILS }}
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+        run: |
+          cd retail_daily_report
+          python main.py --send-now
+
+  self_check:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'self-check' || github.event_name == 'schedule' && github.event.schedule == '35 0 * * *'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
       
-      - name: 保存报告存档
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
         with:
-          name: retail-daily-report-${{ github.run_number }}
-          path: retail_daily_report/reports/
-          retention-days: 30
+          python-version: '3.11'
+      
+      - name: 安装依赖
+        run: |
+          cd retail_daily_report
+          pip install -r requirements.txt
+      
+      - name: 执行自检
+        env:
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          RECEIVER_EMAILS: ${{ secrets.RECEIVER_EMAILS }}
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+        run: |
+          cd retail_daily_report
+          python main.py --self-check
+
+  # 失败重试任务
+  retry_on_failure:
+    needs: send_daily_report
+    if: failure()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 等待5分钟
+        run: sleep 300
+      
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 安装依赖
+        run: |
+          cd retail_daily_report
+          pip install -r requirements.txt
+      
+      - name: 重试发送
+        env:
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          RECEIVER_EMAILS: ${{ secrets.RECEIVER_EMAILS }}
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+        run: |
+          cd retail_daily_report
+          python main.py --send-now
+
+  # 发送失败告警
+  alert_on_final_failure:
+    needs: retry_on_failure
+    if: failure()
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置Python环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 安装依赖
+        run: |
+          cd retail_daily_report
+          pip install -r requirements.txt
       
       - name: 发送失败告警
-        if: failure()
+        env:
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          RECEIVER_EMAILS: ${{ secrets.RECEIVER_EMAILS }}
+          WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
         run: |
-          echo "零售日报发送失败，请检查日志"
+          cd retail_daily_report
+          python -c "
+from utils.email_sender import EmailSender
+from utils.wecom_sender import WeComSender
+from datetime import datetime
+
+# 发送邮件告警
+sender = EmailSender()
+alert_html = '''
+<html><body>
+<h2>⚠️ 零售日报系统运行失败</h2>
+<p>时间: {}</p>
+<p>多次重试后仍然失败，请检查 GitHub Actions 日志。</p>
+<p><a href=\"https://github.com/popeyeluo-coder/personal-assistant/actions\">查看日志</a></p>
+</body></html>
+'''.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+sender._send_email(alert_html, '【零售日报告警】系统运行失败')
+
+# 发送企微告警
+wecom = WeComSender()
+wecom.send_alert('零售日报系统运行失败', '多次重试后仍然失败，请检查 GitHub Actions 日志')
+"

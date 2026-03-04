@@ -1,66 +1,42 @@
 {
   "date": "20260304",
-  "count": 36,
+  "count": 23,
   "items": [
     {
       "title": "京东上线百亿超市，向即时零售白牌供给宣战-36氪",
       "link": "https://www.36kr.com/p/3707150061351041",
       "summary": "要知道当下即时零售的全品类化已经是不可逆转的行业趋势，美团闪购、淘宝闪购等平台早已突破“应急”二字的局限，积极拓展日用百货、生鲜、美妆等品类，甚至开始向京东的核心优势3C品类发起冲击，试图实现“万物...",
       "source": "36Kr",
-      "age": "9 hours ago",
+      "age": "11 hours ago",
       "platform": "brave_search",
       "search_keyword": "零售 新闻",
       "category": "primary",
       "value_score": 76.0,
-      "is_new": true
-    },
-    {
-      "title": "只用了7天，上海人就把Costco玩坏了-36氪",
-      "link": "https://36kr.com/p/1724301377537",
-      "summary": "这个超市就是上周火爆全网的美国最大连锁会员制仓储超市Costco，中文名叫好市多。 · 8月27日，Costco大陆地区第一家门店在上海闵行开业。 ... 今年8月27日，发生的大事不少，比如，土地管理法修改、新设了6个自贸区，这些最多也就是炒房客关心。 · 刷屏的则是，美国Costco在上海开业。那天生意有多火爆，简单回顾下。 · Costco上海闵行店开在朱建路上，一般去的话要么开车，要么地铁换公交。",
-      "source": "36Kr",
-      "age": "1 day ago",
-      "platform": "brave_search",
-      "search_keyword": "仓储会员店 Costco",
-      "category": "format",
-      "value_score": 76.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "2026年零售业真相：不是卷不动了，而是你根本没资格卷？-36氪",
       "link": "https://36kr.com/p/3705788513792387",
       "summary": "一位熟悉华南市场的零售观察者说，“盒马在广东不是在试水，而是摆出了一副‘必须拿下’的姿态。100家店的目标，若按全年计算，意味着平均每3-4天就要开出一家新店，这个速度在竞争如此激烈的市场，是相当激进的。”",
       "source": "36Kr",
-      "age": "20 hours ago",
+      "age": "1 day ago",
       "platform": "brave_search",
       "search_keyword": "零售 新闻",
       "category": "primary",
       "value_score": 73.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "【收藏向】耗时3个月，全国 11 家超市大横评！山姆丨胖东来丨盒马丨永辉丨开市客丨沃尔玛……_哔哩哔哩_bilibili",
       "link": "https://www.bilibili.com/video/BV1qBcEzAEJg/",
       "summary": "中产超市全覆盖！一天逛完山姆、Costco、奥乐齐、盒马、永旺、永辉胖改店（二）",
       "source": "Bilibili",
-      "age": "17 hours ago",
+      "age": "18 hours ago",
       "platform": "brave_search",
-      "search_keyword": "超市 永辉",
+      "search_keyword": "仓储会员店 山姆",
       "category": "format",
       "value_score": 73.0,
-      "is_new": true
-    },
-    {
-      "title": "苹果超市，安卓服务！中国区山姆超市吃饭没座位，只能站着吃！遥遥领先美国山姆！_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1xjPjznEvy/",
-      "summary": "-, 视频播放量 52003、弹幕量 ...点】我们正在失去对手机的控制权，【收藏向】耗时3个月，全国 11 家超市大横评！山姆丨胖东来丨盒马丨永辉丨开市客丨沃尔玛……，别等iPhone了！苹果3月王炸是3000档无后缀Ma...",
-      "source": "Bilibili",
-      "age": "12 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "超市 永辉",
-      "category": "format",
-      "value_score": 70.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利|山姆|盒马|零售_新浪科技_新浪网",
@@ -72,7 +48,7 @@
       "search_keyword": "零售 新闻",
       "category": "primary",
       "value_score": 66.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利_搜狐网",
@@ -84,139 +60,91 @@
       "search_keyword": "零售 新闻",
       "category": "primary",
       "value_score": 66.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "日本7-11爆红增肌恩物 高蛋白饭团1个抵4个 抗衰老/健身人士每天要吃多少蛋白质才足够？",
       "link": "https://www.stheadline.com/zh-hans/exercise/3549314/%E6%97%A5%E6%9C%AC7-11%E7%88%86%E7%BA%A2%E5%A2%9E%E8%82%8C%E6%81%A9%E7%89%A9-%E9%AB%98%E8%9B%8B%E7%99%BD%E9%A5%AD%E5%9B%A21%E4%B8%AA%E6%8A%B54%E4%B8%AA-%E6%8A%97%E8%A1%B0%E8%80%81%E5%81%A5%E8%BA%AB%E4%BA%BA%E5%A3%AB%E6%AF%8F%E5%A4%A9%E8%A6%81%E5%90%83%E5%A4%9A%E5%B0%91%E8%9B%8B%E7%99%BD%E8%B4%A8%E6%89%8D%E8%B6%B3%E5%A4%9F",
       "summary": "很多人去日本旅游都喜欢逛便利店，因其商品不推陈出新，经常都找到意外之喜。近期日本7-11新推出一款高蛋白饭团，就堪称「增肌恩物」，备受健身和减肥人士的关注，在社交平台上火速爆红。蛋白质对于维持身体机能、生成肌肉十分重要，不只是增肌人士才需要多吃。随著年纪增长，肌肉会加速流失，长者要维持健康更需要吃得足够。",
       "source": "Star Headline",
-      "age": "19 hours ago",
+      "age": "1 day ago",
       "platform": "brave_search",
       "search_keyword": "便利店 全家",
       "category": "format",
       "value_score": 66.0,
-      "is_new": true
+      "is_new": false
     },
     {
-      "title": "抖音美团特价团购，谁更便宜-36氪",
-      "link": "https://36kr.com/p/2694517450157445",
-      "summary": "消费者需要先买特价券，然后再到店核销。特价团购，主打的就是比普通团购还便宜。 · 就拿章如爱吃的麦当劳来说，2023年7月，麦当劳穷鬼套餐（随心配1+1套餐）从11.9元涨到13.9元，一度让章如这样的抠抠族叫苦不迭。 · 但“坏景不长”，美团“特价团购”专区里，很快又出现了麦当劳9.9元特价团购。",
-      "source": "36Kr",
-      "age": "20 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "美团 零售",
-      "category": "giant",
-      "value_score": 66.0,
-      "is_new": true
-    },
-    {
-      "title": "韩流走热 外国人在韩消费创新高 | 韩国 | 文化 | 外国游客 | 大纪元",
-      "link": "https://www.epochtimes.com/gb/26/3/3/n14710168.htm",
-      "summary": "【大纪元2026年03月03日讯】（大纪元记者安景报导）随着韩国文化持续走红，赴韩外国游客的消费明显增加。最新数据显示，2025年外国人在韩国境内使用银行卡消费的金额达140.8亿美元，较2024年的119.1亿美元增长18.2%，增加21.7亿美元，创下历史新高。",
-      "source": "Epoch Times",
-      "age": "12 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "消费 趋势",
-      "category": "primary",
-      "value_score": 65.0,
-      "is_new": true
-    },
-    {
-      "title": "为什么槟榔总在便利店门口卖？【食录】_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1rT2QBaEqA/",
-      "summary": "便利店门口的槟榔，如何嚼碎6000万人的口腔？, 视频播放量 3580081、弹幕量 1918、点赞数 102334、投硬币枚数 3154、收藏人数 9376、转发人数 2292, 视频作者 赛博小食录, 作者简介 一个小号，来点短的｜商务合作：saiboshilu | ...",
+      "title": "苹果超市，安卓服务！中国区山姆超市吃饭没座位，只能站着吃！遥遥领先美国山姆！_哔哩哔哩_bilibili",
+      "link": "https://www.bilibili.com/video/BV1xjPjznEvy/",
+      "summary": "-, 视频播放量 52003、弹幕量 144、点赞数 2478、投硬币枚数 185、收藏人数 396、转发人数 198, 视频作者 6GHz, 作者简介 手机独立评测，现在和将来都不接受任何手机评测充值 商务合作:six6ghz@qq.com（本人），相关视频：给我一个不买iPhone17的理由——锐评三星S26，数码区的太阳，永远怀念！，恒生科技，连食堂阿姨都嫌弃。，这不是火车站，这是天津山姆超市！，爱否科技聊极客湾被封后续，彭林也被吓怕了叫弹幕别再刷极客湾了。感觉不是手机厂商投诉的",
       "source": "Bilibili",
       "age": "14 hours ago",
       "platform": "brave_search",
-      "search_keyword": "商超 新闻",
-      "category": "primary",
-      "value_score": 65.0,
-      "is_new": true
-    },
-    {
-      "title": "据调查,股票投资收益率排名前1%的超高手以3日下午2时30分为准,净收购了SK海力士和SK电信、丰山、现代汽车、三星电子等企业。 相反,Rainbow Robotics和Celltrion LIG N.. - MK",
-      "link": "https://www.mk.co.kr/cn/stock/11977286",
-      "summary": "当天,据未来资产证券透...SK海力士的跌幅在盘中超过了9%,所谓的&quot;100万尼克斯&quot;也崩溃了。 据分析,这是因为围绕地缘政治不确定性的乐观论在扩大战局中减弱,外国人实现差价的待售商品集中的影响。 超高手们...",
-      "source": "Makro",
-      "age": "1 day ago",
-      "platform": "brave_search",
-      "search_keyword": "商超 新闻",
-      "category": "primary",
-      "value_score": 65.0,
-      "is_new": true
+      "search_keyword": "仓储会员店 山姆",
+      "category": "format",
+      "value_score": 66.0,
+      "is_new": false
     },
     {
       "title": "消费并购买买买开始，谁会是中国的消费3g资本？-36氪",
       "link": "https://36kr.com/p/2550701259102592",
       "summary": "专注于传播新消费品牌、消费升级的垂直产业新媒体 · 发表文章202篇 · 2025新茶饮复盘：告别野蛮生长，存量博弈下的生死时速 · 2026-02-10 · 20款产品无一纯正，价格却高出三倍：“水牛奶”翻车背后，谁在推波助澜？ ·",
       "source": "36Kr",
-      "age": "14 hours ago",
+      "age": "16 hours ago",
       "platform": "brave_search",
       "search_keyword": "消费升级",
       "category": "trend",
       "value_score": 65.0,
-      "is_new": true
+      "is_new": false
     },
     {
-      "title": "急头白脸吃顿海鲜！沪币琼币哪个更划算？钱包炸了…_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1zjAeznEwW/",
-      "summary": "消费 · 王师傅和小毛毛 发消息 · 山猪吃细糠~ 关注 182.2万 · 【嘿丝科技】苹果全家桶太贵？重生后，我用安卓混搭装备反杀霸道工作强制爱！ · 嘿丝科技 · 王师傅和小毛毛 Food chat · （11/11） · 自动连播 ·",
-      "source": "Bilibili",
-      "age": "14 hours ago",
+      "title": "阿里云-计算，为了无法计算的价值",
+      "link": "https://cn.aliyun.com/",
+      "summary": "月之暗面 Kimi 大模型基于阿里云ACK 实现海量数据预处理。月之暗面在数据处理能力、资源利用效率和运维管理维度实现了全方位升级。 · 零售 · 森马基于阿里云函数计算，快速实现传统服装行业与 AI “碰撞”，在多场景下以 AIGC 实现生产提效，引领行业数字化、智能化转型的新风尚。 ·",
+      "source": "Aliyun",
+      "age": "18 hours ago",
       "platform": "brave_search",
-      "search_keyword": "消费 趋势",
-      "category": "primary",
+      "search_keyword": "阿里零售",
+      "category": "giant",
       "value_score": 63.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "数千人正举起“镰刀”，砍向拼多多-36氪",
       "link": "https://36kr.com/p/1663217013020419",
       "summary": "早期，有人确实通过“砍一刀”最后砍价成功。“以前拼多多刚出来那会儿薅羊毛难度不算很大，当时页面会直接显示剩余具体金额，哪怕最后几刀，只要是新用户都是能砍0.5元左右。” · 用户邓超向伯虎财经感慨，如今拼多多慢慢回归正常电商平台的角色，砍价几乎很难成功。“现在从最后10元左右开始，全是1分2分。”",
       "source": "36Kr",
-      "age": "46 minutes ago",
+      "age": "2 hours ago",
       "platform": "brave_search",
       "search_keyword": "拼多多 线下",
       "category": "giant",
       "value_score": 63.0,
-      "is_new": true
-    },
-    {
-      "title": "美团发布AI浏览器-36氪",
-      "link": "https://36kr.com/p/3705563927572865",
-      "summary": "美团创始人王兴近年来表现出对AI的强烈兴趣。2025年2月底，王兴召开总监级别以上的内部沟通会，并提出在第二个十年他作为CEO（首席执行官）会更多关注的三个“新”方向——食杂零售、国际化和科技。其中在科技方面，美团希望抓住这一次的AI机遇，建设大规模、全品类、有纵深且生态健康的本地商业系统。",
-      "source": "36Kr",
-      "age": "1 day ago",
-      "platform": "brave_search",
-      "search_keyword": "美团 零售",
-      "category": "giant",
-      "value_score": 63.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "【milet】在上海的便利店买了些什么？_哔哩哔哩_bilibili",
       "link": "https://www.bilibili.com/video/BV1Zm421K7Y5/",
       "summary": "便利店 · 全家 · Vlog · milet · milet_music 发消息 · 日本创作型歌手milet ▶︎1.16「The Story of Us」上线▶︎2.13(周五).14(周六)日本武道馆举办演出 · 关注 34.4万 · 这才是老玩家心心念念的打金！货币靠打，装备靠打，自由交易！ ·",
       "source": "Bilibili",
-      "age": "2 hours ago",
+      "age": "4 hours ago",
       "platform": "brave_search",
       "search_keyword": "便利店 全家",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "全家最贵的便当！每天还限量5份！全家【麻辣小龙虾盖饭】体验报告【小达达】吃遍上海#S08E90_哔哩哔哩_bilibili",
       "link": "https://www.bilibili.com/video/BV1rW41197n9/",
       "summary": "全家是你家，麻辣***, 视频播放量 249079、弹幕量 1755、点赞数 1687、投硬币枚数 418、收藏人数 322、转发人数 324, 视频作者 小短腿叔可米, 作者简介 带你逛吃魔都各种好玩的店，还有便利店和快餐，相关视频：【一口388！】...",
       "source": "Bilibili",
-      "age": "2 hours ago",
+      "age": "4 hours ago",
       "platform": "brave_search",
       "search_keyword": "便利店 全家",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "日本三元超大关东煮，和便利店哪个更好吃？_哔哩哔哩_bilibili",
@@ -228,7 +156,7 @@
       "search_keyword": "便利店 全家",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "合金危机 6_哔哩哔哩bilibili_合金装备_剪辑",
@@ -240,7 +168,7 @@
       "search_keyword": "仓储会员店 山姆",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "评测！山姆新品粮全其美鲜葱手抓饼怎么样？_哔哩哔哩_bilibili",
@@ -252,163 +180,79 @@
       "search_keyword": "仓储会员店 山姆",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "【2.28】超详细！一个视频-山姆10款近期新品-试吃&打分&排名_哔哩哔哩_bilibili",
       "link": "https://www.bilibili.com/video/BV1xRAhzoEBV/",
       "summary": "会员购 · 漫画 · 赛事 · 投稿 · 4.7万 · 112 · 2026-02-28 21:56:58 · 1202 · 546 · 223 · 60 · 超级详细！ · 开箱 · 新品 · 山姆 · 美食测评 · 日常vlog · 爱吃的刘不老师 发消息 · 内容：山姆真实测评只想认真做内容。 我是：ENTJ &amp;没用沈腾声音包。 ·",
       "source": "Bilibili",
-      "age": "20 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "仓储会员店 山姆",
-      "category": "format",
-      "value_score": 61.0,
-      "is_new": true
-    },
-    {
-      "title": "市售汤圆反诈指南——汤圆齁甜，可能不是糖的问题_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1UyASzjEP6/",
-      "summary": "会员购 · 漫画 · 赛事 · 投稿 · 12.2万 · 304 · 2026-02-27 15:57:43 · 3941 · 645 · 1528 · 897 · 谁喜欢在汤圆里加人造奶油？ 谁需要在汤圆里加香精？ 汤圆这么甜到底是什么问题？ 今天我们一起走进配料表 · 记录我的美食日常 · 汤圆 · 光明 · 元宵节 · 山姆 ·",
-      "source": "Bilibili",
       "age": "1 day ago",
       "platform": "brave_search",
       "search_keyword": "仓储会员店 山姆",
       "category": "format",
       "value_score": 61.0,
-      "is_new": true
+      "is_new": false
     },
     {
-      "title": "舔狗经济”崩盘下，谁能抓住男性消费万亿商机？_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1HiAZzREG4/",
-      "summary": "“舔狗经济”崩盘下，谁能抓住男性消费万亿商机？, 视频播放量 56870、弹幕量 582、点赞数 3079、投硬币枚数 1131、收藏人数 1862、转发人数 429, 视频作者 老蒋巨靠谱, 作者简介 一直踏入河流，相关视频：【半佛】农夫山泉在火锅店快成神仙了，勇哥亲自下场：花数小时蹲点实测，用真实数据告诉你什么叫“有效人流”，【股市结算】3月3日，炸懵了，亏大了。，【巫师】男色经济，和它的变种们，省流:下午大跌！亏了七个多点！亏损几乎翻倍！你们满意了吗？，2026.03.03，小瑜哥个人复盘，时代很开放，但价值观不应开放丨每个人都应该修炼社交防御力，还没到抄底的时候！冰点还没到，继续等待爆发！，建议要稳定市场了，那么大个店，一下就倒闭了",
-      "source": "Bilibili",
-      "age": "14 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "消费 趋势",
-      "category": "primary",
-      "value_score": 60.0,
-      "is_new": true
-    },
-    {
-      "title": "自嗨锅大败局：明星捧红，资本奶大，市场抛弃【暗中观察426】IC实验室_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV18pAUzkEca/",
-      "summary": "自嗨锅的一生，正如它名字一般，只是一场昂贵而渺小的自嗨。, 视频播放量 768816、弹幕量 2182、点赞数 19283、投硬币枚数 1041、收藏人数 3529、转发人数 530, 视频作者 IC实验室, 作者简介 关注大众消费、互联网商业和流行文化。@IC实验室，全网同名。，相关视频：正新鸡排被年轻人抛弃，它还有活路吗？，为什么全国景区都在卖轰炸大鱿鱼？【食录】，全女倒闭潮：全女酒吧全女书店全女小饭桌为什么全部倒闭？，3片肥牛的日式盖饭，割不动中国人了",
-      "source": "Bilibili",
-      "age": "15 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "消费 趋势",
-      "category": "primary",
-      "value_score": 60.0,
-      "is_new": true
-    },
-    {
-      "title": "「斬首」成為新常態： 讓領導先走｜ #人民報 #shorts - YouTube",
-      "link": "https://www.youtube.com/shorts/dtWu-BD2ndA",
-      "summary": "#曉坤話時局 #人民報 #曉坤 #中東局勢 #伊朗 #台海局勢 #北京 #習近平 #哈梅內伊 #川普-🔥本節目由普瑞堂「玄寶黑蔘」贊助🔥購滿【普瑞堂】商品滿500美元，可獲贈九蒸九曝、純手工古法製成的玄寶黑蔘原蔘一根。多買多...",
-      "source": "YouTube",
-      "age": "11 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "消费 趋势",
-      "category": "primary",
-      "value_score": 60.0,
-      "is_new": true
-    },
-    {
-      "title": "Seedance2.0外网爆火以后AI小电影一个人也能拍，AIGC将彻底颠覆整个影视行业涨粉10万就在眼前|CAPTAIN OF HONGKOU - S102_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1C5c5zAEQ8/",
-      "summary": "实体经济有救了，上峰紧急叫停“仅退款”是解药吗？| 电商冲击 |政策调整 | 零售寒冬| 店主绝望 | 政策回撤 | 行业自保",
-      "source": "Bilibili",
+      "title": "降费，降费，又有巨头官宣-36氪",
+      "link": "https://36kr.com/p/2578318209410439",
+      "summary": "除了动漫游戏ETF，华泰柏瑞也同步下调了品牌消费ETF的管理费，该ETF的管理费自12 月27日起从0.50%调整为0.30%，托管费维持不变，综合费率从0.6%下调至0.4%。",
+      "source": "36Kr",
       "age": "4 hours ago",
       "platform": "brave_search",
-      "search_keyword": "便利店 行业",
-      "category": "primary",
-      "value_score": 60.0,
-      "is_new": true
-    },
-    {
-      "title": "出门都戴帽子的年轻人，让这个品牌赚翻了-36氪",
-      "link": "https://36kr.com/p/2155313259060994",
-      "summary": "在淘宝&amp;天猫发布的《2022潮流服装消费者品类趋势洞察报告》中，18-34岁的年轻消费群体在选购潮流服饰时，最关注的要素中包括“当下潮流”“产品质量”以及“明星达人种草”。至少目前，在这些方面MLB是符合年轻人需求...",
-      "source": "36Kr",
-      "age": "17 hours ago",
-      "platform": "brave_search",
-      "search_keyword": "年轻人消费",
+      "search_keyword": "消费降级",
       "category": "trend",
       "value_score": 60.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "20个人，估值超10亿美金，大厂接连疯抢-36氪",
       "link": "https://36kr.com/p/3705877122674818",
       "summary": "未来消费 · 智能涌现 · 未来城市 · 启动Power on · 36氪出海 · 36氪研究院 · 潮生TIDE · 36氪企服点评 · 36氪财经 · 职场bonus · 36碳 · 后浪研究所 · 暗涌Waves · 硬氪 · 氪睿研究院 · 媒体品牌 · 企业号 · 企服点评 ·",
       "source": "36Kr",
-      "age": "5 hours ago",
+      "age": "7 hours ago",
       "platform": "brave_search",
       "search_keyword": "Z世代消费",
       "category": "trend",
       "value_score": 60.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "a16z领投200万美元，一款产品瞄准北美Alpha世代社交市场-36氪",
       "link": "https://36kr.com/p/3706364755390596",
       "summary": "Coverstar的应用内购买项目包含了Starcoins虚拟货币和Coverstar Premium订阅服务。Starcoins价格在0.99-99.99美元之间不等，可以用来为创作者送虚拟礼物、加成视频曝光、解锁额外视觉效果等。这种虚拟货币体系与很多直播平台采用的礼物经济在形式上类似，但在Coverstar的社区生态中，付费行为更多表现为一种鼓励和支持的设定，而非用户消费的主要驱动力。由于目标人群以未成年人为主，家长通常会限制甚至禁止内购行为，这也使得Starcoins体系在实际中并未形成稳定的付费闭环。",
       "source": "36Kr",
-      "age": "15 hours ago",
+      "age": "16 hours ago",
       "platform": "brave_search",
       "search_keyword": "Z世代消费",
       "category": "trend",
       "value_score": 60.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "【📣5天狂減】零食飲品陪你開工🛒 . 新春假期過咗返工返學又要重新進入狀...",
       "link": "https://www.weekendhk.com/%E8%B3%BC%E7%89%A9%E5%84%AA%E6%83%A0/%E8%B3%BC%E7%89%A9%E5%84%AA%E6%83%A0%E6%83%85%E5%A0%B1-circle-k-%E4%BE%BF%E5%88%A9%E5%BA%97%E5%84%AA%E6%83%A0-jetsohub-aplt-468-3377826/",
       "summary": "【📣5天狂減】零食飲品陪你開工🛒.新春假期過咗，返工返學又要重新進入狀態喇💪！想提神、解悶，零食同飲品就係最佳拍檔👯‍♀️～快啲去OK便利店入手，朱古力🍫、雪糕🍦 、茶飲🍵、咖啡☕ 同啤酒🍺 ，全部都有5天限時優惠💥，陪你由假期模式切換返奮鬥",
       "source": "WeekendHK",
-      "age": "10 hours ago",
+      "age": "12 hours ago",
       "platform": "brave_search",
       "search_keyword": "便利店 全家",
       "category": "format",
       "value_score": 58.0,
-      "is_new": true
+      "is_new": false
     },
     {
-      "title": "实拍中国最火商超胖东来:凌晨户外排队,全国百姓蜂拥而至,它到底凭什么封神?(小叔TV EP465) - YouTube",
-      "link": "https://www.youtube.com/watch?v=M0P2S3_WoUI",
-      "summary": "打卡河南新乡“6A级景区”胖东来！全国游客蜂拥而至，凌晨排队只为进超市。这里不仅物价实惠、细节感人，更有“不开心假”等神仙员工福利。除了胖东来，新乡的红焖羊肉也是一绝。来这座宝藏三线城市，感受极致的...",
-      "source": "YouTube",
+      "title": "2026 闭眼搞钱！拼多多 AI 虚拟店，月稳赚 1-2W！ – 懒人资源-懒人资源吧-wordpress-项目分享-项目分享网-创业交流-网创项目-网创经验-网创教程",
+      "link": "https://www.lrzy8.com/lrzy/54902",
+      "summary": "AI 电商黄金风口 普通人也轻松赚钱 小白可做 高收益：单店月纯利 1-2 万，日均 300-700 元，旺季翻倍，副业超主业 AI风口：AI定制化服务&amp;n&amp;hellip;",
+      "source": "Lrzy8",
       "age": "1 day ago",
       "platform": "brave_search",
-      "search_keyword": "超市 永辉",
-      "category": "format",
-      "value_score": 58.0,
-      "is_new": true
-    },
-    {
-      "title": "每月花1000欧，在南意大利能过怎样的生活？_哔哩哔哩_bilibili",
-      "link": "https://www.bilibili.com/video/BV1W2f8BzEwm/",
-      "summary": "意大利开超市赚钱吗？｜南意大利小企业主的一天 · 除了披萨和意大利面，意大利人还吃什么? 网红不会给你看的意大利美食：比你想象的更简单",
-      "source": "Bilibili",
-      "age": "10 minutes ago",
-      "platform": "brave_search",
-      "search_keyword": "超市 永辉",
-      "category": "format",
-      "value_score": 58.0,
-      "is_new": true
-    },
-    {
-      "title": "跨界AI搜索，美团Tabbit公测，或是一石二鸟之计？|美团|AI|零售_新浪科技_新浪网",
-      "link": "https://finance.sina.com.cn/tech/roll/2026-03-03/doc-inhpsttp0799607.shtml",
-      "summary": "截至发稿，美团方面尚未对此作出回应。 · 庄帅对时代周报记者分析认为，若Tabbit与本地生活业务结合，最先落地的场景更可能是跨店自动点餐等即时零售场景。相较于动态行程规划，即时零售的商品（餐食、生鲜、日用品）决策门槛低、复购率高，AI干预的成功率也极高。跨店点餐正是这类高频、刚需场景的复杂化体现，AI的价值在于将用户从“在多个APP间反复切换”的繁琐操作中解放出来，这比行程规划更能体现“私人生活管家”的核心价值。",
-      "source": "Sina Finance",
-      "age": "1 day ago",
-      "platform": "brave_search",
-      "search_keyword": "美团 零售",
-      "category": "giant",
+      "search_keyword": "消费降级",
+      "category": "trend",
       "value_score": 53.0,
-      "is_new": true
+      "is_new": false
     },
     {
       "title": "一句台词带火一个品牌：“紫薯精”让刘文祥麻辣烫爆单断货_视频_周小闹_门店",
@@ -420,19 +264,19 @@
       "search_keyword": "京东 实体店",
       "category": "giant",
       "value_score": 50.0,
-      "is_new": true
+      "is_new": false
     },
     {
-      "title": "年轻人为何下单“情绪年货”",
-      "link": "http://m.cyol.com/gb/articles/2026-03/03/content_77m7jRteEY.html",
-      "summary": "李昊城则在品牌方看到了更广阔的行业图景。从IP授权、产品设计、生产制造到渠道零售、营销活动，“谷子”市场已然形成一条完整的产业链，创造了从设计师、原型师到社群运营、活动策划的大量新兴岗位。“我们搭建的不仅是一个购买场景，更是一个文化体验和情感连接的入口。”他说，看到家长因为孩子而了解并接受一种新文化，或是一个年轻人因为在店里抽到“爆款”而与陌生人击掌庆祝，他感到这份工作的意义超越了商业价值本身。 ... “谷子”消费早已超越单纯的购物行为，成为年轻人构建身份认同、寻求社群归属的重要方式。而如何让这份基于“热爱”的市场健康、持久地运行，是所有人必须面对的课题。",
-      "source": "Cyol",
+      "title": "深圳，真的撑不住了吗? - 禁闻网",
+      "link": "https://www.bannedbook.org/bnews/cnnews/20260303/2293007.html",
+      "summary": "当破产、跑路、订单流失与消费降级交织，欠薪基金的创纪录垫付或许只是冰山一角。当“有限垫付”成为越来越多打工者的依靠，这场寒潮还将持续多久？",
+      "source": "Bannedbook",
       "age": "1 day ago",
       "platform": "brave_search",
-      "search_keyword": "年轻人消费",
+      "search_keyword": "消费降级",
       "category": "trend",
       "value_score": 50.0,
-      "is_new": true
+      "is_new": false
     }
   ]
 }

@@ -4,26 +4,58 @@ AI日报系统 - 配置文件
 每天早上8:00自动推送AI领域最新动态
 """
 import os
+import sys
+from pathlib import Path
+
+# ==================== 加载本地密钥（如果存在）====================
+# 优先从本地密钥文件读取，否则从环境变量读取
+_local_secrets = {}
+_secrets_file = Path(__file__).parent.parent / "local_secrets.py"
+if _secrets_file.exists():
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("local_secrets", _secrets_file)
+        local_secrets_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(local_secrets_module)
+        _local_secrets = {
+            "EMAIL_PASSWORD": getattr(local_secrets_module, "EMAIL_PASSWORD", ""),
+            "WECOM_WEBHOOK_URL": getattr(local_secrets_module, "WECOM_WEBHOOK_URL", ""),
+            "BRAVE_API_KEY": getattr(local_secrets_module, "BRAVE_API_KEY", ""),
+            "SENDER_EMAIL": getattr(local_secrets_module, "SENDER_EMAIL", ""),
+            "RECEIVER_EMAILS": getattr(local_secrets_module, "RECEIVER_EMAILS", ""),
+        }
+        print("📁 已加载本地密钥配置")
+    except Exception as e:
+        print(f"⚠️ 加载本地密钥失败: {e}")
+
+def _get_secret(key: str, default: str = "") -> str:
+    """获取密钥，优先本地配置，其次环境变量"""
+    return _local_secrets.get(key) or os.environ.get(key, default)
 
 # ==================== 搜索API配置 ====================
 BRAVE_SEARCH_CONFIG = {
-    "api_key": os.environ.get("BRAVE_API_KEY", "BSA2f0EsW7yU8canxgUOnfwYvhlUY1L"),
+    "api_key": _get_secret("BRAVE_API_KEY", "BSA2f0EsW7yU8canxgUOnfwYvhlUY1L"),
     "base_url": "https://api.search.brave.com/res/v1/web/search",
     "results_per_query": 15,
     "freshness": "pd",  # 过去24小时
 }
 
 # ==================== 邮件配置 ====================
-_receiver_emails_str = os.environ.get("RECEIVER_EMAILS", "709703094@qq.com")
+_receiver_emails_str = _get_secret("RECEIVER_EMAILS", "709703094@qq.com")
 _receiver_emails = [email.strip() for email in _receiver_emails_str.split(",") if email.strip()]
 
 EMAIL_CONFIG = {
     "smtp_server": "smtp.qq.com",
     "smtp_port": 465,
-    "sender_email": os.environ.get("SENDER_EMAIL", "709703094@qq.com"),
-    "sender_password": os.environ.get("EMAIL_PASSWORD", ""),
+    "sender_email": _get_secret("SENDER_EMAIL", "709703094@qq.com"),
+    "sender_password": _get_secret("EMAIL_PASSWORD", ""),
     "receiver_emails": _receiver_emails,
     "subject_template": "【AI日报】{date} | 人工智能领域最新动态",
+}
+
+# ==================== 企微配置 ====================
+WECOM_CONFIG = {
+    "webhook_url": _get_secret("WECOM_WEBHOOK_URL", "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ed570230-8df9-4379-abf4-567ace0071de"),
 }
 
 # ==================== 定时任务配置 ====================

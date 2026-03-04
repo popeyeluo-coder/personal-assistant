@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "date": "2026-03-04",
+      "time": "13:38:56",
+      "success": true,
+      "email_ok": false,
+      "wecom_ok": true,
+      "news_count": 34,
+      "error": null
+    },
+    {
+      "date": "2026-03-04",
+      "time": "13:45:12",
+      "success": true,
+      "email_ok": false,
+      "wecom_ok": true,
+      "news_count": 26,
+      "error": null
+    },
+    {
+      "date": "2026-03-04",
+      "time": "13:49:13",
+      "success": true,
+      "email_ok": true,
+      "wecom_ok": true,
+      "news_count": 23,
+      "error": null
+    }
+  ]
+}

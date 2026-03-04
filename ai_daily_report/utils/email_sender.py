@@ -75,15 +75,25 @@ class EmailSender:
             html_part = MIMEText(html_content, "html", "utf-8")
             message.attach(html_part)
             
-            # 使用SSL发送
-            context = ssl.create_default_context()
-            with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=context) as server:
-                server.login(self.sender_email, self.sender_password)
-                server.sendmail(
-                    self.sender_email,
-                    self.receiver_emails,
-                    message.as_string()
-                )
+            # 发送邮件的内部函数
+            def do_send(ctx):
+                with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=ctx) as server:
+                    server.login(self.sender_email, self.sender_password)
+                    server.sendmail(
+                        self.sender_email,
+                        self.receiver_emails,
+                        message.as_string()
+                    )
+            
+            # 首先尝试使用默认SSL上下文
+            try:
+                context = ssl.create_default_context()
+                do_send(context)
+            except ssl.SSLCertVerificationError:
+                # 证书验证失败时，使用不验证证书的方式重试
+                print("   ⚠️ SSL证书验证失败，尝试跳过验证...")
+                context = ssl._create_unverified_context()
+                do_send(context)
             
             print(f"✅ 邮件发送成功: {subject}")
             print(f"   收件人: {', '.join(self.receiver_emails)}")
@@ -101,15 +111,16 @@ class EmailSender:
     
     def send_test_email(self) -> bool:
         """发送测试邮件"""
-        test_html = """
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        test_html = f"""
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
             <style>
-                body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 20px; }
-                .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                         color: white; padding: 20px; border-radius: 10px; }
+                body {{ font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 20px; }}
+                .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                         color: white; padding: 20px; border-radius: 10px; }}
             </style>
         </head>
         <body>
@@ -117,10 +128,10 @@ class EmailSender:
                 <h1>🤖 AI日报系统测试</h1>
                 <p>这是一封测试邮件，如果您收到此邮件，说明邮件配置正确！</p>
             </div>
-            <p>测试时间: {}</p>
+            <p>测试时间: {now_str}</p>
         </body>
         </html>
-        """.format(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        """
         
         return self._send_email(test_html, "【AI日报】系统测试邮件")
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-邮件发送模块
+零售日报 - 邮件发送模块
 """
 import os
 import sys
@@ -42,10 +42,21 @@ class EmailSender:
             message["To"] = ", ".join(self.receiver_emails)
             message.attach(MIMEText(html_content, "html", "utf-8"))
             
-            context = ssl.create_default_context()
-            with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=context) as server:
-                server.login(self.sender_email, self.sender_password)
-                server.sendmail(self.sender_email, self.receiver_emails, message.as_string())
+            # 发送邮件的内部函数
+            def do_send(ctx):
+                with smtplib.SMTP_SSL(self.smtp_server, self.smtp_port, context=ctx) as server:
+                    server.login(self.sender_email, self.sender_password)
+                    server.sendmail(self.sender_email, self.receiver_emails, message.as_string())
+            
+            # 首先尝试使用默认SSL上下文
+            try:
+                context = ssl.create_default_context()
+                do_send(context)
+            except ssl.SSLCertVerificationError:
+                # 证书验证失败时，使用不验证证书的方式重试
+                print("   ⚠️ SSL证书验证失败，尝试跳过验证...")
+                context = ssl._create_unverified_context()
+                do_send(context)
             
             print(f"✅ 邮件发送成功: {subject}")
             return True

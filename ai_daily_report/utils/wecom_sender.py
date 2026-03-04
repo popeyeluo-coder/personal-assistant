@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-AI日报系统 - 企业微信推送模块
-推送包含重要新闻详情，无需查看邮箱即可了解核心内容
+AI日报系统 - 企业微信推送模块（增强版）
+展示完整新闻列表、专业点评、可点击链接
+按AI产业链分类展示：硬件/芯片、基础模型、应用层等
 """
 import os
 import sys
 import requests
 from datetime import datetime
 from pathlib import Path
+from typing import Dict, List
 
-# 添加项目根目录到路径
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
@@ -20,34 +21,24 @@ except:
 
 
 class WeComSender:
-    """企业微信机器人推送"""
+    """企业微信机器人推送（增强版）"""
     
     def __init__(self):
         self.webhook_url = os.environ.get("WECOM_WEBHOOK_URL") or DEFAULT_WEBHOOK or \
             "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ed570230-8df9-4379-abf4-567ace0071de"
     
     def send_markdown(self, content: str) -> bool:
-        """
-        发送Markdown格式消息
-        
-        Args:
-            content: Markdown内容
-        
-        Returns:
-            是否发送成功
-        """
+        """发送Markdown格式消息"""
         if not self.webhook_url:
             print("⚠️ 企微Webhook未配置，跳过发送")
             return False
         
         try:
-            data = {
-                "msgtype": "markdown",
-                "markdown": {
-                    "content": content
-                }
-            }
+            # 企微markdown有4096字符限制
+            if len(content) > 4000:
+                content = content[:3900] + "\n\n> ⚠️ 内容过长已截断，完整报告请查看邮箱"
             
+            data = {"msgtype": "markdown", "markdown": {"content": content}}
             response = requests.post(self.webhook_url, json=data, timeout=30)
             result = response.json()
             
@@ -57,115 +48,189 @@ class WeComSender:
             else:
                 print(f"❌ 企微推送失败: {result.get('errmsg', '未知错误')}")
                 return False
-                
         except Exception as e:
             print(f"❌ 企微推送异常: {e}")
             return False
     
-    def send_daily_report(self, news_summary: dict, date_str: str = None) -> bool:
+    def send_daily_report(self, analysis_results: Dict, date_str: str = None) -> bool:
         """
-        发送日报摘要到企微（包含重要新闻详情）
-        
-        Args:
-            news_summary: 新闻摘要数据
-            date_str: 日期字符串
-        
-        Returns:
-            是否发送成功
+        发送日报到企微（包含完整新闻和专业点评）
         """
         if date_str is None:
             date_str = datetime.now().strftime("%Y年%m月%d日")
         
-        # 构建Markdown内容
-        content = self._build_rich_markdown(news_summary, date_str)
+        # 兼容旧格式
+        if isinstance(analysis_results, str):
+            return self._send_simple_report(analysis_results, date_str)
+        
+        content = self._build_rich_report(analysis_results, date_str)
         return self.send_markdown(content)
     
-    def _build_rich_markdown(self, summary: dict, date_str: str) -> str:
-        """构建富内容Markdown格式的日报（包含新闻详情）"""
+    def _send_simple_report(self, html_content: str, date_str: str) -> bool:
+        """兼容旧格式"""
+        content = f"""# 🤖 AI日报 | {date_str}
+
+📧 完整报告已发送至邮箱，请查收。"""
+        return self.send_markdown(content)
+    
+    def _build_rich_report(self, results: Dict, date_str: str) -> str:
+        """构建富内容报告"""
+        items = results.get("items", [])
+        overall_review = results.get("overall_review", {})
+        chain_reviews = results.get("chain_reviews", {})
+        summary = results.get("summary", {})
+        
         lines = [
             f"# 🤖 AI日报 | {date_str}",
             "",
         ]
         
-        # 统计信息
-        total = summary.get("total_news", 0)
-        p1_count = summary.get("p1_count", 0)
-        lines.append(f"📊 共采集 **{total}** 条新闻，<font color=\"warning\">{p1_count} 条重要</font>")
+        # 统计概览
+        total = len(items)
+        p1_count = summary.get("priority_counts", {}).get("P1", 0)
+        p2_count = summary.get("priority_counts", {}).get("P2", 0)
+        
+        lines.append(f"📊 共 **{total}** 条新闻 | <font color=\"warning\">{p1_count} 条高优</font> | {p2_count} 条重要")
         lines.append("")
         
-        # 专家总评（如果有）
-        expert_summary = summary.get("expert_summary", "")
-        if expert_summary:
-            lines.append(f"**📋 今日概览**")
-            lines.append(f"> {expert_summary[:300]}")
-            lines.append("")
-        
-        # P1重要新闻（展示详情，最多6条）
-        p1_news = summary.get("p1_news", [])[:6]
-        if p1_news:
+        # ===== 整体点评 =====
+        if overall_review:
             lines.append("---")
-            lines.append("## 🔥 重要新闻")
+            lines.append("## 📋 今日整体点评")
+            lines.append("")
+            lines.append(f"> {overall_review.get('overview', '')}")
             lines.append("")
             
-            for i, news in enumerate(p1_news, 1):
-                title = news.get("title", "")[:80]
-                url = news.get("url", "#")
-                value = news.get("value_rating", "★★★")
-                comment = news.get("comment", "")[:100] if news.get("comment") else ""
-                source = news.get("source", "")
-                description = news.get("description", "")[:150] if news.get("description") else ""
-                
-                lines.append(f"**{i}. [{title}]({url})**")
-                if source:
-                    lines.append(f"   来源: {source} | 价值度: {value}")
-                if description:
-                    lines.append(f"   > {description}")
-                if comment:
-                    lines.append(f"   💡 *{comment}*")
+            focus_points = overall_review.get("focus_points", [])
+            if focus_points:
+                lines.append("**🎯 您需要关注：**")
+                for point in focus_points[:4]:
+                    lines.append(f"• {point}")
+                lines.append("")
+            
+            reasons = overall_review.get("reasons", [])
+            if reasons:
+                lines.append("**💡 原因分析：**")
+                for reason in reasons[:3]:
+                    lines.append(f"• {reason}")
                 lines.append("")
         
-        # P2值得关注（最多4条，带简介）
-        p2_news = summary.get("p2_news", [])[:4]
-        if p2_news:
+        # ===== 高优新闻（P1）=====
+        p1_items = [i for i in items if i.get("priority") == "P1"][:8]
+        if p1_items:
             lines.append("---")
-            lines.append("## 📌 值得关注")
+            lines.append("## 🔥 高优必读")
             lines.append("")
-            for news in p2_news:
-                title = news.get("title", "")[:60]
-                url = news.get("url", "#")
-                description = news.get("description", "")[:80] if news.get("description") else ""
-                if description:
-                    lines.append(f"- [{title}]({url})")
-                    lines.append(f"  > {description}")
+            
+            for i, item in enumerate(p1_items, 1):
+                title = item.get("title", "")[:70]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                chain = item.get("chain", {}).get("name", "AI")
+                event = item.get("event_type", {}).get("name", "动态")
+                companies = item.get("companies", [])
+                expert = item.get("expert_comment", {})
+                
+                lines.append(f"**{i}. [{title}]({url})**")
+                
+                # 标签行
+                tags = [f"`{chain}`", f"`{event}`"]
+                if companies:
+                    tags.append(f"`{companies[0]}`")
+                lines.append(f"   {' '.join(tags)}")
+                
+                # 专家点评
+                focus = expert.get("focus_points", [])
+                reasons = expert.get("reasons", [])
+                if focus:
+                    lines.append(f"   🎯 *{focus[0]}*")
+                if reasons:
+                    lines.append(f"   💡 {reasons[0][:60]}")
+                lines.append("")
+        
+        # ===== 按产业链展示 =====
+        lines.append("---")
+        lines.append("## 📈 分产业链要闻")
+        lines.append("")
+        
+        shown_chains = 0
+        for chain_key, review in chain_reviews.items():
+            if shown_chains >= 5:
+                break
+            
+            if review.get("total", 0) == 0:
+                continue
+            
+            chain_name = review.get("name", "")
+            chain_icon = review.get("icon", "📰")
+            p1_cnt = review.get("p1_count", 0)
+            total_cnt = review.get("total", 0)
+            chain_summary = review.get("summary", "")
+            top_items = review.get("top_items", [])[:3]
+            
+            if not top_items:
+                continue
+            
+            shown_chains += 1
+            
+            # 产业链标题
+            header = f"### {chain_icon} {chain_name}"
+            if p1_cnt > 0:
+                header += f" <font color=\"warning\">({p1_cnt}条高优)</font>"
+            lines.append(header)
+            
+            # 产业链点评
+            if chain_summary:
+                lines.append(f"> {chain_summary[:80]}")
+            lines.append("")
+            
+            # 新闻列表
+            for item in top_items:
+                title = item.get("title", "")[:55]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                priority = item.get("priority", "P3")
+                
+                if priority == "P1":
+                    lines.append(f"🔴 [{title}]({url})")
+                elif priority == "P2":
+                    lines.append(f"🟡 [{title}]({url})")
                 else:
-                    lines.append(f"- [{title}]({url})")
+                    lines.append(f"• [{title}]({url})")
             lines.append("")
         
-        # 维度分布
-        dimensions = summary.get("dimensions", {})
-        if dimensions:
+        # ===== P2补充 =====
+        p2_items = [i for i in items if i.get("priority") == "P2"]
+        shown_titles = set()
+        for review in chain_reviews.values():
+            for item in review.get("top_items", []):
+                shown_titles.add(item.get("title", ""))
+        
+        remaining_p2 = [i for i in p2_items if i.get("title") not in shown_titles][:5]
+        
+        if remaining_p2:
             lines.append("---")
-            dim_items = list(dimensions.items())[:5]
-            dim_text = " | ".join([f"**{k}**: {v}" for k, v in dim_items])
-            lines.append(f"📈 {dim_text}")
+            lines.append("## 📌 其他重要")
+            lines.append("")
+            for item in remaining_p2:
+                title = item.get("title", "")[:55]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                chain = item.get("chain", {}).get("name", "")
+                lines.append(f"• [{title}]({url}) `{chain}`")
             lines.append("")
         
-        # 底部提示
-        lines.append("> 📧 完整报告已发送至邮箱")
+        # ===== 热门公司 =====
+        hot_companies = summary.get("hot_companies", [])[:6]
+        if hot_companies:
+            lines.append("---")
+            lines.append(f"🏢 **热门公司**: {' | '.join(hot_companies)}")
+            lines.append("")
+        
+        # 底部
+        lines.append("> 📧 完整报告含详细点评已发送至邮箱")
         
         return "\n".join(lines)
     
     def send_alert(self, title: str, message: str) -> bool:
-        """
-        发送告警消息
-        
-        Args:
-            title: 告警标题
-            message: 告警内容
-        
-        Returns:
-            是否发送成功
-        """
+        """发送告警消息"""
         content = f"""# ⚠️ {title}
 
 {message}
@@ -175,48 +240,9 @@ class WeComSender:
         return self.send_markdown(content)
 
 
-# 便捷接口
-def send_wecom_report(news_summary: dict, date_str: str = None) -> bool:
-    """发送报告到企微的便捷接口"""
-    sender = WeComSender()
-    return sender.send_daily_report(news_summary, date_str)
+def send_wecom_report(analysis_results: Dict, date_str: str = None) -> bool:
+    return WeComSender().send_daily_report(analysis_results, date_str)
 
 
 def send_wecom_alert(title: str, message: str) -> bool:
-    """发送告警到企微的便捷接口"""
-    sender = WeComSender()
-    return sender.send_alert(title, message)
-
-
-if __name__ == "__main__":
-    # 测试发送
-    sender = WeComSender()
-    test_summary = {
-        "expert_summary": "今日AI领域动态活跃，OpenAI发布GPT-5预览版引发广泛关注，国内大模型厂商也纷纷推出新功能。技术突破方面，多模态能力成为竞争焦点。",
-        "total_news": 50,
-        "p1_count": 8,
-        "p1_news": [
-            {
-                "title": "OpenAI发布GPT-5预览版，推理能力大幅提升",
-                "url": "https://example.com/1",
-                "value_rating": "★★★",
-                "source": "机器之心",
-                "description": "GPT-5在数学推理、代码生成等任务上表现出色，较GPT-4有显著提升",
-                "comment": "里程碑式更新，将改变AI应用格局"
-            },
-            {
-                "title": "Anthropic Claude 4正式开放API，支持100万token上下文",
-                "url": "https://example.com/2",
-                "value_rating": "★★★",
-                "source": "36氪",
-                "description": "Claude 4在长文本处理能力上实现突破，可处理整本书籍",
-                "comment": "长上下文能力领先竞品"
-            },
-        ],
-        "p2_news": [
-            {"title": "百度文心一言用户突破2亿", "url": "https://example.com/3", "description": "国内大模型用户增长迅猛"},
-            {"title": "阿里通义千问开源Qwen2.5", "url": "https://example.com/4", "description": "开源模型性能追平闭源"},
-        ],
-        "dimensions": {"技术突破": 10, "产品发布": 15, "商业动态": 8, "开源生态": 5}
-    }
-    sender.send_daily_report(test_summary)
+    return WeComSender().send_alert(title, message)

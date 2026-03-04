@@ -169,16 +169,8 @@ def main():
         print("\n💬 步骤5: 推送企微")
         from utils.wecom_sender import send_wecom_report
         
-        # 构建企微摘要数据
-        wecom_summary = {
-            "expert_summary": analysis_results.get("expert_summary", {}).get("overview", ""),
-            "total_news": len(collected_data),
-            "p1_count": len(analysis_results.get("p1_news", [])),
-            "p1_news": analysis_results.get("p1_news", [])[:5],
-            "p2_news": analysis_results.get("p2_news", [])[:3],
-            "dimensions": analysis_results.get("dimension_stats", {}),
-        }
-        wecom_ok = send_wecom_report(wecom_summary, today_str)
+        # 直接传递完整的分析结果给企微（新版）
+        wecom_ok = send_wecom_report(analysis_results, today_str)
         
         # 记录推送结果
         success = email_ok or wecom_ok

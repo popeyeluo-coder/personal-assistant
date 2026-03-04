@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-零售日报系统 - 企业微信推送模块
-推送包含重要新闻详情，无需查看邮箱即可了解核心内容
+零售日报系统 - 企业微信推送模块（增强版）
+展示完整新闻列表、专业点评、可点击链接
+企微是最高频查看渠道，确保信息完整有价值
 """
 import os
 import sys
 import requests
 from datetime import datetime
 from pathlib import Path
+from typing import Dict, List
 
-# 添加项目根目录到路径
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
@@ -20,34 +21,24 @@ except:
 
 
 class WeComSender:
-    """企业微信机器人推送"""
+    """企业微信机器人推送（增强版）"""
     
     def __init__(self):
         self.webhook_url = os.environ.get("WECOM_WEBHOOK_URL") or DEFAULT_WEBHOOK or \
             "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ed570230-8df9-4379-abf4-567ace0071de"
     
     def send_markdown(self, content: str) -> bool:
-        """
-        发送Markdown格式消息
-        
-        Args:
-            content: Markdown内容
-        
-        Returns:
-            是否发送成功
-        """
+        """发送Markdown格式消息"""
         if not self.webhook_url:
             print("⚠️ 企微Webhook未配置，跳过发送")
             return False
         
         try:
-            data = {
-                "msgtype": "markdown",
-                "markdown": {
-                    "content": content
-                }
-            }
+            # 企微markdown有4096字符限制，需要截断
+            if len(content) > 4000:
+                content = content[:3900] + "\n\n> ⚠️ 内容过长已截断，完整报告请查看邮箱"
             
+            data = {"msgtype": "markdown", "markdown": {"content": content}}
             response = requests.post(self.webhook_url, json=data, timeout=30)
             result = response.json()
             
@@ -57,115 +48,198 @@ class WeComSender:
             else:
                 print(f"❌ 企微推送失败: {result.get('errmsg', '未知错误')}")
                 return False
-                
         except Exception as e:
             print(f"❌ 企微推送异常: {e}")
             return False
     
-    def send_daily_report(self, news_summary: dict, date_str: str = None) -> bool:
+    def send_daily_report(self, analysis_results: Dict, date_str: str = None) -> bool:
         """
-        发送日报摘要到企微（包含重要新闻详情）
+        发送日报到企微（包含完整新闻和专业点评）
         
         Args:
-            news_summary: 新闻摘要数据
+            analysis_results: 分析结果（包含items, overall_review, industry_reviews等）
             date_str: 日期字符串
-        
-        Returns:
-            是否发送成功
         """
         if date_str is None:
             date_str = datetime.now().strftime("%Y年%m月%d日")
         
-        # 构建Markdown内容
-        content = self._build_rich_markdown(news_summary, date_str)
+        # 兼容旧格式（HTML内容）和新格式（分析结果）
+        if isinstance(analysis_results, str):
+            # 旧格式：HTML内容，提取基本信息
+            return self._send_simple_report(analysis_results, date_str)
+        
+        content = self._build_rich_report(analysis_results, date_str)
         return self.send_markdown(content)
     
-    def _build_rich_markdown(self, summary: dict, date_str: str) -> str:
-        """构建富内容Markdown格式的日报（包含新闻详情）"""
+    def _send_simple_report(self, html_content: str, date_str: str) -> bool:
+        """发送简单报告（兼容旧格式）"""
+        content = f"""# 🛒 零售日报 | {date_str}
+
+📧 完整报告已发送至邮箱，请查收。
+
+> 本消息由AI助理自动推送"""
+        return self.send_markdown(content)
+    
+    def _build_rich_report(self, results: Dict, date_str: str) -> str:
+        """构建富内容报告"""
+        items = results.get("items", [])
+        overall_review = results.get("overall_review", {})
+        industry_reviews = results.get("industry_reviews", {})
+        summary = results.get("summary", {})
+        
         lines = [
             f"# 🛒 零售日报 | {date_str}",
             "",
         ]
         
-        # 统计信息
-        total = summary.get("total_news", 0)
-        p1_count = summary.get("p1_count", 0)
-        lines.append(f"📊 共采集 **{total}** 条新闻，<font color=\"warning\">{p1_count} 条重要</font>")
+        # 统计概览
+        total = len(items)
+        p1_count = summary.get("priority_counts", {}).get("P1", 0)
+        p2_count = summary.get("priority_counts", {}).get("P2", 0)
+        
+        lines.append(f"📊 共 **{total}** 条新闻 | <font color=\"warning\">{p1_count} 条高优</font> | {p2_count} 条重要")
         lines.append("")
         
-        # 专家总评（如果有）
-        expert_summary = summary.get("expert_summary", "")
-        if expert_summary:
-            lines.append(f"**📋 今日概览**")
-            lines.append(f"> {expert_summary[:300]}")
-            lines.append("")
-        
-        # P1重要新闻（展示详情，最多6条）
-        p1_news = summary.get("p1_news", [])[:6]
-        if p1_news:
+        # ===== 整体点评 =====
+        if overall_review:
             lines.append("---")
-            lines.append("## 🔥 重要新闻")
+            lines.append("## 📋 今日整体点评")
+            lines.append("")
+            lines.append(f"> {overall_review.get('overview', '')}")
             lines.append("")
             
-            for i, news in enumerate(p1_news, 1):
-                title = news.get("title", "")[:80]
-                url = news.get("url", "#")
-                value = news.get("value_rating", "★★★")
-                comment = news.get("comment", "")[:100] if news.get("comment") else ""
-                source = news.get("source", "")
-                description = news.get("description", "")[:150] if news.get("description") else ""
-                
-                lines.append(f"**{i}. [{title}]({url})**")
-                if source:
-                    lines.append(f"   来源: {source} | 价值度: {value}")
-                if description:
-                    lines.append(f"   > {description}")
-                if comment:
-                    lines.append(f"   💡 *{comment}*")
+            focus_points = overall_review.get("focus_points", [])
+            if focus_points:
+                lines.append("**🎯 您需要关注：**")
+                for point in focus_points[:4]:
+                    lines.append(f"• {point}")
+                lines.append("")
+            
+            reasons = overall_review.get("reasons", [])
+            if reasons:
+                lines.append("**💡 原因分析：**")
+                for reason in reasons[:3]:
+                    lines.append(f"• {reason}")
                 lines.append("")
         
-        # P2值得关注（最多4条，带简介）
-        p2_news = summary.get("p2_news", [])[:4]
-        if p2_news:
+        # ===== 高优新闻（P1）=====
+        p1_items = [i for i in items if i.get("priority") == "P1"][:8]
+        if p1_items:
             lines.append("---")
-            lines.append("## 📌 值得关注")
+            lines.append("## 🔥 高优必读")
             lines.append("")
-            for news in p2_news:
-                title = news.get("title", "")[:60]
-                url = news.get("url", "#")
-                description = news.get("description", "")[:80] if news.get("description") else ""
-                if description:
-                    lines.append(f"- [{title}]({url})")
-                    lines.append(f"  > {description}")
+            
+            for i, item in enumerate(p1_items, 1):
+                title = item.get("title", "")[:70]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                industry = item.get("industry", {}).get("name", "零售")
+                event = item.get("event_type", {}).get("name", "动态")
+                companies = item.get("companies", [])
+                expert = item.get("expert_comment", {})
+                
+                lines.append(f"**{i}. [{title}]({url})**")
+                
+                # 标签行
+                tags = [f"`{industry}`", f"`{event}`"]
+                if companies:
+                    tags.append(f"`{companies[0]}`")
+                lines.append(f"   {' '.join(tags)}")
+                
+                # 专家点评
+                focus = expert.get("focus_points", [])
+                reasons = expert.get("reasons", [])
+                if focus:
+                    lines.append(f"   🎯 *{focus[0]}*")
+                if reasons:
+                    lines.append(f"   💡 {reasons[0][:60]}")
+                lines.append("")
+        
+        # ===== 按行业展示重要新闻 =====
+        lines.append("---")
+        lines.append("## 📈 分行业要闻")
+        lines.append("")
+        
+        # 选取有高优新闻的行业
+        shown_industries = 0
+        for ind_key, review in industry_reviews.items():
+            if shown_industries >= 5:  # 最多展示5个行业
+                break
+            
+            if review.get("total", 0) == 0:
+                continue
+            
+            ind_name = review.get("name", "")
+            ind_icon = review.get("icon", "📰")
+            p1_cnt = review.get("p1_count", 0)
+            total_cnt = review.get("total", 0)
+            ind_summary = review.get("summary", "")
+            top_items = review.get("top_items", [])[:3]
+            
+            if not top_items:
+                continue
+            
+            shown_industries += 1
+            
+            # 行业标题
+            header = f"### {ind_icon} {ind_name}"
+            if p1_cnt > 0:
+                header += f" <font color=\"warning\">({p1_cnt}条高优)</font>"
+            lines.append(header)
+            
+            # 行业点评
+            if ind_summary:
+                lines.append(f"> {ind_summary[:80]}")
+            lines.append("")
+            
+            # 该行业新闻列表
+            for item in top_items:
+                title = item.get("title", "")[:55]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                priority = item.get("priority", "P3")
+                
+                if priority == "P1":
+                    lines.append(f"🔴 [{title}]({url})")
+                elif priority == "P2":
+                    lines.append(f"🟡 [{title}]({url})")
                 else:
-                    lines.append(f"- [{title}]({url})")
+                    lines.append(f"• [{title}]({url})")
             lines.append("")
         
-        # 业态分布
-        dimensions = summary.get("dimensions", {})
-        if dimensions:
+        # ===== P2重要新闻补充 =====
+        p2_items = [i for i in items if i.get("priority") == "P2"]
+        # 排除已在行业中展示的
+        shown_titles = set()
+        for review in industry_reviews.values():
+            for item in review.get("top_items", []):
+                shown_titles.add(item.get("title", ""))
+        
+        remaining_p2 = [i for i in p2_items if i.get("title") not in shown_titles][:5]
+        
+        if remaining_p2:
             lines.append("---")
-            dim_items = list(dimensions.items())[:5]
-            dim_text = " | ".join([f"**{k}**: {v}" for k, v in dim_items])
-            lines.append(f"📈 {dim_text}")
+            lines.append("## 📌 其他重要")
+            lines.append("")
+            for item in remaining_p2:
+                title = item.get("title", "")[:55]
+                url = item.get("link", "") or item.get("url", "") or "#"
+                industry = item.get("industry", {}).get("name", "")
+                lines.append(f"• [{title}]({url}) `{industry}`")
             lines.append("")
         
-        # 底部提示
-        lines.append("> 📧 完整报告已发送至邮箱")
+        # ===== 热门企业 =====
+        hot_companies = summary.get("hot_companies", [])[:6]
+        if hot_companies:
+            lines.append("---")
+            lines.append(f"🏢 **热门企业**: {' | '.join(hot_companies)}")
+            lines.append("")
+        
+        # 底部
+        lines.append("> 📧 完整报告含详细点评已发送至邮箱")
         
         return "\n".join(lines)
     
     def send_alert(self, title: str, message: str) -> bool:
-        """
-        发送告警消息
-        
-        Args:
-            title: 告警标题
-            message: 告警内容
-        
-        Returns:
-            是否发送成功
-        """
+        """发送告警消息"""
         content = f"""# ⚠️ {title}
 
 {message}
@@ -175,48 +249,9 @@ class WeComSender:
         return self.send_markdown(content)
 
 
-# 便捷接口
-def send_wecom_report(news_summary: dict, date_str: str = None) -> bool:
-    """发送报告到企微的便捷接口"""
-    sender = WeComSender()
-    return sender.send_daily_report(news_summary, date_str)
+def send_wecom_report(analysis_results: Dict, date_str: str = None) -> bool:
+    return WeComSender().send_daily_report(analysis_results, date_str)
 
 
 def send_wecom_alert(title: str, message: str) -> bool:
-    """发送告警到企微的便捷接口"""
-    sender = WeComSender()
-    return sender.send_alert(title, message)
-
-
-if __name__ == "__main__":
-    # 测试发送
-    sender = WeComSender()
-    test_summary = {
-        "expert_summary": "今日零售行业动态活跃，便利店和会员店赛道持续扩张，多家企业发布新战略。",
-        "total_news": 36,
-        "p1_count": 5,
-        "p1_news": [
-            {
-                "title": "山姆会员店宣布2026年新增10家门店计划",
-                "url": "https://example.com/1",
-                "value_rating": "★★★",
-                "source": "联商网",
-                "description": "山姆计划在一二线城市持续扩张，加速布局中国市场",
-                "comment": "会员店赛道竞争加剧"
-            },
-            {
-                "title": "盒马鲜生推出新零售3.0战略，全面升级供应链",
-                "url": "https://example.com/2",
-                "value_rating": "★★★",
-                "source": "36氪",
-                "description": "盒马将重点打造自有品牌，提升商品力和供应链效率",
-                "comment": "新零售进入深水区"
-            },
-        ],
-        "p2_news": [
-            {"title": "永辉超市完成供应链数字化升级", "url": "https://example.com/3", "description": "传统商超加速数字化转型"},
-            {"title": "7-11便利店进入西南市场", "url": "https://example.com/4", "description": "便利店巨头持续下沉"},
-        ],
-        "dimensions": {"开店扩张": 10, "业态创新": 8, "供应链": 5, "融资并购": 3}
-    }
-    sender.send_daily_report(test_summary)
+    return WeComSender().send_alert(title, message)

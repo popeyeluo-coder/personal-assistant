@@ -74,7 +74,7 @@ class WeComSender:
         return self.send_markdown(content)
     
     def _build_rich_report(self, results: Dict, date_str: str) -> str:
-        """构建富内容报告"""
+        """构建富内容报告（控制在4000字符以内）"""
         items = results.get("items", [])
         overall_review = results.get("overall_review", {})
         chain_reviews = results.get("chain_reviews", {})
@@ -90,142 +90,70 @@ class WeComSender:
         p1_count = summary.get("priority_counts", {}).get("P1", 0)
         p2_count = summary.get("priority_counts", {}).get("P2", 0)
         
-        lines.append(f"📊 共 **{total}** 条新闻 | <font color=\"warning\">{p1_count} 条高优</font> | {p2_count} 条重要")
+        lines.append(f"📊 共 **{total}** 条 | <font color=\"warning\">{p1_count} 高优</font> | {p2_count} 重要")
         lines.append("")
         
-        # ===== 整体点评 =====
+        # ===== 整体点评（精简版）=====
         if overall_review:
-            lines.append("---")
-            lines.append("## 📋 今日整体点评")
-            lines.append("")
-            lines.append(f"> {overall_review.get('overview', '')}")
+            overview_text = overall_review.get('overview', '')[:150]
+            lines.append(f"> {overview_text}")
             lines.append("")
             
-            focus_points = overall_review.get("focus_points", [])
+            focus_points = overall_review.get("focus_points", [])[:3]
             if focus_points:
-                lines.append("**🎯 您需要关注：**")
-                for point in focus_points[:4]:
-                    lines.append(f"• {point}")
-                lines.append("")
-            
-            reasons = overall_review.get("reasons", [])
-            if reasons:
-                lines.append("**💡 原因分析：**")
-                for reason in reasons[:3]:
-                    lines.append(f"• {reason}")
+                lines.append("**🎯 关注点：**" + " | ".join(focus_points[:2]))
                 lines.append("")
         
-        # ===== 高优新闻（P1）=====
-        p1_items = [i for i in items if i.get("priority") == "P1"][:8]
+        # ===== 高优新闻（P1）最多5条 =====
+        p1_items = [i for i in items if i.get("priority") == "P1"][:5]
         if p1_items:
             lines.append("---")
             lines.append("## 🔥 高优必读")
             lines.append("")
             
             for i, item in enumerate(p1_items, 1):
-                title = item.get("title", "")[:70]
+                title = item.get("title", "")[:50]
                 url = item.get("link", "") or item.get("url", "") or "#"
                 chain = item.get("chain", {}).get("name", "AI")
-                event = item.get("event_type", {}).get("name", "动态")
-                companies = item.get("companies", [])
-                expert = item.get("expert_comment", {})
                 
-                lines.append(f"**{i}. [{title}]({url})**")
-                
-                # 标签行
-                tags = [f"`{chain}`", f"`{event}`"]
-                if companies:
-                    tags.append(f"`{companies[0]}`")
-                lines.append(f"   {' '.join(tags)}")
-                
-                # 专家点评
-                focus = expert.get("focus_points", [])
-                reasons = expert.get("reasons", [])
-                if focus:
-                    lines.append(f"   🎯 *{focus[0]}*")
-                if reasons:
-                    lines.append(f"   💡 {reasons[0][:60]}")
-                lines.append("")
+                lines.append(f"**{i}. [{title}]({url})** `{chain}`")
+            lines.append("")
         
-        # ===== 按产业链展示 =====
+        # ===== 按产业链展示（最多3个产业链，每个2条）=====
         lines.append("---")
-        lines.append("## 📈 分产业链要闻")
+        lines.append("## 📈 产业链要闻")
         lines.append("")
         
         shown_chains = 0
         for chain_key, review in chain_reviews.items():
-            if shown_chains >= 5:
+            if shown_chains >= 3:
                 break
             
             if review.get("total", 0) == 0:
                 continue
             
-            chain_name = review.get("name", "")
-            chain_icon = review.get("icon", "📰")
-            p1_cnt = review.get("p1_count", 0)
-            total_cnt = review.get("total", 0)
-            chain_summary = review.get("summary", "")
-            top_items = review.get("top_items", [])[:3]
-            
+            top_items = review.get("top_items", [])[:2]
             if not top_items:
                 continue
             
             shown_chains += 1
+            chain_name = review.get("name", "")
+            chain_icon = review.get("icon", "📰")
             
-            # 产业链标题
-            header = f"### {chain_icon} {chain_name}"
-            if p1_cnt > 0:
-                header += f" <font color=\"warning\">({p1_cnt}条高优)</font>"
-            lines.append(header)
-            
-            # 产业链点评
-            if chain_summary:
-                lines.append(f"> {chain_summary[:80]}")
-            lines.append("")
-            
-            # 新闻列表
+            lines.append(f"**{chain_icon} {chain_name}**")
             for item in top_items:
-                title = item.get("title", "")[:55]
+                title = item.get("title", "")[:40]
                 url = item.get("link", "") or item.get("url", "") or "#"
-                priority = item.get("priority", "P3")
-                
-                if priority == "P1":
-                    lines.append(f"🔴 [{title}]({url})")
-                elif priority == "P2":
-                    lines.append(f"🟡 [{title}]({url})")
-                else:
-                    lines.append(f"• [{title}]({url})")
-            lines.append("")
-        
-        # ===== P2补充 =====
-        p2_items = [i for i in items if i.get("priority") == "P2"]
-        shown_titles = set()
-        for review in chain_reviews.values():
-            for item in review.get("top_items", []):
-                shown_titles.add(item.get("title", ""))
-        
-        remaining_p2 = [i for i in p2_items if i.get("title") not in shown_titles][:5]
-        
-        if remaining_p2:
-            lines.append("---")
-            lines.append("## 📌 其他重要")
-            lines.append("")
-            for item in remaining_p2:
-                title = item.get("title", "")[:55]
-                url = item.get("link", "") or item.get("url", "") or "#"
-                chain = item.get("chain", {}).get("name", "")
-                lines.append(f"• [{title}]({url}) `{chain}`")
+                lines.append(f"• [{title}]({url})")
             lines.append("")
         
         # ===== 热门公司 =====
-        hot_companies = summary.get("hot_companies", [])[:6]
+        hot_companies = summary.get("hot_companies", [])[:5]
         if hot_companies:
-            lines.append("---")
-            lines.append(f"🏢 **热门公司**: {' | '.join(hot_companies)}")
+            lines.append(f"🏢 **热门**: {' | '.join(hot_companies)}")
             lines.append("")
         
-        # 底部
-        lines.append("> 📧 完整报告含详细点评已发送至邮箱")
+        lines.append("> 📧 详细报告已发邮箱")
         
         return "\n".join(lines)
     

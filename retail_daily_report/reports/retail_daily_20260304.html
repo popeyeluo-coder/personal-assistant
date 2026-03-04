@@ -6,8 +6,8 @@
     <title>零售日报 - 2026年03月04日</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
         
         .header {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
@@ -15,159 +15,650 @@
         }
         .header h1 { font-size: 28px; margin-bottom: 8px; }
         .header .date { font-size: 16px; opacity: 0.9; }
-        .header .stats { display: flex; justify-content: center; gap: 30px; margin-top: 15px; }
+        .header .stats { display: flex; justify-content: center; gap: 40px; margin-top: 15px; }
         .header .stat-item { text-align: center; }
-        .header .stat-value { font-size: 24px; font-weight: bold; }
+        .header .stat-value { font-size: 28px; font-weight: bold; }
         .header .stat-label { font-size: 12px; opacity: 0.8; }
         
-        .expert-card {
+        /* 整体点评卡片 */
+        .overview-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px; padding: 20px; margin-bottom: 20px; color: white;
+            border-radius: 16px; padding: 24px; margin-bottom: 20px; color: white;
         }
-        .expert-card .title { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: bold; margin-bottom: 12px; }
-        .expert-card .risk-badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; background: rgba(255,255,255,0.2); }
-        .expert-card .overview { font-size: 14px; line-height: 1.8; margin-bottom: 15px; }
-        .expert-card .section { background: rgba(255,255,255,0.15); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
-        .expert-card .section-title { font-size: 12px; font-weight: bold; margin-bottom: 8px; }
-        .expert-card .section-item { font-size: 12px; padding: 4px 0; }
+        .overview-card .title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .overview-card .risk-badge { font-size: 12px; padding: 4px 12px; border-radius: 12px; background: rgba(255,255,255,0.2); }
+        .overview-card .overview-text { font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
         
-        .news-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
-        .section-header h2 { font-size: 18px; }
-        .section-header .count { background: #11998e; color: white; font-size: 12px; padding: 2px 8px; border-radius: 10px; }
+        .review-section { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .review-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 15px; }
+        .review-box .box-title { font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .review-box .box-item { font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .review-box .box-item:last-child { border-bottom: none; }
         
-        .news-item { padding: 15px; border-radius: 10px; margin-bottom: 12px; background: #f8f9fa; border-left: 4px solid #11998e; }
+        /* 行业卡片 */
+        .industry-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .industry-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
+        .industry-header .left { display: flex; align-items: center; gap: 10px; }
+        .industry-header .icon { font-size: 24px; }
+        .industry-header h2 { font-size: 18px; color: #333; }
+        .industry-header .count { background: #11998e; color: white; font-size: 12px; padding: 3px 10px; border-radius: 10px; }
+        .industry-header .p1-badge { background: #dc3545; color: white; font-size: 11px; padding: 2px 8px; border-radius: 8px; margin-left: 8px; }
+        
+        .industry-review { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        .industry-review .summary { font-size: 14px; color: #333; margin-bottom: 12px; font-weight: 500; }
+        .industry-review .focus-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .industry-review .focus-item { font-size: 12px; background: #e3f2fd; color: #1976d2; padding: 4px 10px; border-radius: 6px; }
+        .industry-review .reason-item { font-size: 12px; background: #fff3e0; color: #e65100; padding: 4px 10px; border-radius: 6px; }
+        
+        /* 新闻卡片 */
+        .news-item { padding: 15px; border-radius: 10px; margin-bottom: 12px; background: #f8f9fa; border-left: 4px solid #11998e; transition: all 0.2s; }
+        .news-item:hover { transform: translateX(3px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
         .news-item.p1 { border-left-color: #dc3545; background: #fff5f5; }
         .news-item.p2 { border-left-color: #fd7e14; background: #fff8f0; }
-        .news-item.new { position: relative; }
-        .news-item.new::before { content: "新"; position: absolute; top: -5px; right: 10px; background: #dc3545; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; }
+        .news-item.new::after { content: "新"; position: absolute; top: -5px; right: 10px; background: #dc3545; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; }
+        .news-item { position: relative; }
         
         .news-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
         .news-title a { color: #333; text-decoration: none; }
         .news-title a:hover { color: #11998e; }
         
-        .news-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-        .meta-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #e9ecef; color: #666; }
-        .meta-tag.priority-1 { background: #dc3545; color: white; }
-        .meta-tag.priority-2 { background: #fd7e14; color: white; }
-        .meta-tag.dimension { background: #11998e; color: white; }
+        .news-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .meta-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+        .meta-tag.priority { background: #dc3545; color: white; }
+        .meta-tag.priority.p2 { background: #fd7e14; }
+        .meta-tag.industry { background: #11998e; color: white; }
+        .meta-tag.event { background: #6c757d; color: white; }
         .meta-tag.company { background: #28a745; color: white; }
         
-        .news-comment { font-size: 12px; color: #666; padding: 8px 12px; background: white; border-radius: 6px; border-left: 3px solid #11998e; margin-top: 8px; }
+        .news-comment { font-size: 13px; color: #444; padding: 10px 12px; background: white; border-radius: 8px; margin-top: 10px; }
+        .news-comment .focus { color: #1976d2; font-weight: 500; }
+        .news-comment .reason { color: #666; font-size: 12px; margin-top: 5px; }
+        
         .news-summary { font-size: 13px; color: #666; margin-top: 8px; }
         
-        .hot-companies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .company-tag { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; padding: 5px 12px; border-radius: 15px; font-size: 12px; }
+        /* 其他样式 */
+        .section-divider { height: 2px; background: linear-gradient(to right, #11998e, transparent); margin: 25px 0; }
         
-        .simple-list { margin: 0; padding: 0; list-style: none; }
-        .simple-list li { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
-        .simple-list li:last-child { border-bottom: none; }
-        .simple-list .meta { font-size: 11px; color: #999; margin-top: 4px; }
+        .hot-companies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .company-tag { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; padding: 6px 14px; border-radius: 15px; font-size: 12px; }
         
-        .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+        .footer { text-align: center; padding: 25px; color: #999; font-size: 12px; }
+        
+        @media (max-width: 600px) {
+            .review-section { grid-template-columns: 1fr; }
+            .header .stats { gap: 20px; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 头部 -->
         <div class="header">
             <h1>🛒 零售日报</h1>
             <div class="date">2026年03月04日 周三</div>
             <div class="stats">
-                <div class="stat-item"><div class="stat-value">23</div><div class="stat-label">今日新闻</div></div>
-                <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">高优</div></div>
-                <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">新信息</div></div>
+                <div class="stat-item"><div class="stat-value">17</div><div class="stat-label">今日新闻</div></div>
+                <div class="stat-item"><div class="stat-value">1</div><div class="stat-label">高优</div></div>
+                <div class="stat-item"><div class="stat-value">8</div><div class="stat-label">重要</div></div>
+                <div class="stat-item"><div class="stat-value">2</div><div class="stat-label">新信息</div></div>
             </div>
         </div>
         
+        <!-- 整体点评 -->
         
-        <div class="expert-card">
+        <div class="overview-card">
             <div class="title">
-                <span>🎯 今日专家总评</span>
-                <span class="risk-badge" style="background: #28a745;">低关注度</span>
+                <span>📊 今日整体点评</span>
+                <span class="risk-badge" style="background: #fd7e14;">中关注度</span>
             </div>
-            <div class="overview">📊 今日共23条零售资讯，整体平稳。 热点方向：行业动态, 科技赋能, 开店扩张。 重点关注：山姆, 盒马, 全家。</div>
+            <div class="overview-text">📈 今日发现1条高优、8条重要信息。商超, 其他零售值得关注。</div>
             
-            <div class="section">
-                <div class="section-title">📈 关键趋势</div>
-                <div class="section-item">🏪 开店活跃：零售扩张势头明显</div>
+            <div class="review-section">
+                
+                <div class="review-box">
+                    <div class="box-title">🎯 您需要关注</div>
+                    
+                    <div class="box-item">零售扩张势头明显，行业整体向好</div>
+                    
+                    <div class="box-item">重点关注：山姆, 盒马, 沃尔玛</div>
+                    
+                </div>
+                
+                
+                
+                <div class="review-box">
+                    <div class="box-title">💡 原因分析</div>
+                    
+                    <div class="box-item">开店动态(1条)远超关店(0条)</div>
+                    
+                    <div class="box-item">头部企业动向往往引领行业趋势</div>
+                    
+                </div>
+                
             </div>
             
             
-            <div class="section">
-                <div class="section-title">💡 今日建议</div>
-                <div class="section-item">→ 🎯 关注山姆最新动态</div>
+            <div class="review-box" style="margin-top: 15px;">
+                <div class="box-title">✅ 今日建议</div>
+                
+                <div class="box-item">→ ⚡ 优先阅读1条高优新闻</div>
+                
+                <div class="box-item">→ 💰 关注资本动向，可能有行业整合</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        <!-- 按行业展示 -->
+        
+        
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">🏪</span>
+                    <h2>便利店</h2>
+                    <span class="count">1条</span>
+                    <span class="p1-badge">1条高优</span>
+                </div>
+            </div>
+            
+            <!-- 行业点评 -->
+            <div class="industry-review">
+                <div class="summary">便利店业态成熟稳定，鲜食能力成核心竞争力</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 有1条高优信息，建议重点关注</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及重大行业变化或头部企业动态</span>
+                    
+                    <span class="reason-item">💡 涉及企业：山姆</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该行业新闻 -->
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1cZzYBcEke/" target="_blank">山姆260元的会费，还值得吗？【食录】_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">山姆</span><span class="meta-tag company">山姆</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：山姆作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">山姆260元的会费，还值得吗？【食录】, 视频播放量 463615、弹幕量 308、点赞数 14420、投硬币枚数 400、收藏人数 2041、转发人数 833, 视频作者 赛博小食录, 作者简介 一个小号，来点短的｜商务合作：saiboshilu | marketing@huxiu.com，相关视频：一顿2500元，海底捞为啥越做越贵？【食录】，【食录】为什么欧美的泡面没有叉子？，为什么炭烤比电...</div>
+                
             </div>
             
         </div>
         
         
         
-        
-        
-        <div class="news-section">
-            <div class="section-header"><h2>📌 重要关注</h2><span class="count">1条</span></div>
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">🛒</span>
+                    <h2>商超</h2>
+                    <span class="count">6条</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 行业点评 -->
+            <div class="industry-review">
+                <div class="summary">商超行业动态</div>
+                <div class="focus-list">
+                    
+                    
+                    <span class="reason-item">💡 涉及企业：沃尔玛, 山姆, 永辉</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该行业新闻 -->
             
             <div class="news-item p2 ">
-                <div class="news-title"><a href="https://36kr.com/p/3705788513792387" target="_blank">2026年零售业真相：不是卷不动了，而是你根本没资格卷？-36氪</a></div>
-                <div class="news-meta">
-                    <span class="meta-tag priority-2">P2</span>
-                    <span class="meta-tag dimension">🏪 开店扩张</span>
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1qBcEzAEJg/" target="_blank">【收藏向】耗时3个月，全国 11 家超市大横评！山姆丨胖东来丨盒马丨永辉丨开市客丨沃尔玛……_哔哩哔哩_bilibili</a>
                 </div>
-                <div class="news-comment">🏪 开店动态 | 零售网点扩张</div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">永辉</span><span class="meta-tag company">盒马</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：永辉作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">中产超市全覆盖！一天逛完山姆、Costco、奥乐齐、盒马、永旺、永辉胖改店（二）</div>
+                
+            </div>
+            
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1xjPjznEvy/" target="_blank">苹果超市，安卓服务！中国区山姆超市吃饭没座位，只能站着吃！遥遥领先美国山姆！_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">永辉</span><span class="meta-tag company">盒马</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：永辉作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">-, 视频播放量 52003、弹幕量 ...点】我们正在失去对手机的控制权，【收藏向】耗时3个月，全国 11 家超市大横评！山姆丨胖东来丨盒马丨永辉丨开市客丨沃尔玛……，别等iPhone了！苹果3月王炸是3000档无后缀Ma...</div>
+                
+            </div>
+            
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/2794772126227334" target="_blank">进击的山姆，冰火两重天的沃尔玛-36氪</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">沃尔玛</span><span class="meta-tag company">山姆</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：沃尔玛作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">截至目前，沃尔玛在中国拥有47家山姆店，分别坐落在北京、上海、深圳、广州、福州、大连、杭州、苏州、武汉、常州、珠海、天津、厦门、南京、长沙、南昌、成都、沈阳、南通、宁波、昆山、重庆、惠州、南宁和无锡等城市。其中上海门店最多达6家，北京和深圳各有4家，杭州、苏州、武汉各有3家。</div>
+                
+            </div>
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://www.stheadline.com/lifetips/3549548/%E8%A5%BF%E8%B2%A2%E7%99%BE%E4%BD%B3%E5%88%86%E5%BA%97%E7%B5%90%E6%A5%AD%E7%B6%B2%E6%B0%91%E6%AD%B8%E5%92%8E%E7%B6%B2%E8%B3%BC%E5%BD%B1%E9%9F%BF%E5%AF%A6%E9%AB%94%E5%BA%97%E7%94%9F%E6%84%8F-%E5%94%94%E5%B9%AB%E8%A5%AF%E6%98%AF%E6%B2%92%E6%B3%95%E5%AD%90%E7%94%9F%E5%AD%98" target="_blank">西貢百佳分店結業！網民歸咎網購影響實體店生意 「唔幫襯是沒法子生存」</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">百佳分店結業｜近年網購盛行，對實體零售店帶來巨大挑戰。繼年初大窩口邨分店結業後，連鎖超市百佳再有分店傳出結業消息。有網民近日於社交平台分享，指位於西貢市中心的一間百佳超級市場已經停業，事件引發網民對實體店經營模式的熱烈討論。</div>
+                
+            </div>
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1W2f8BzEwm/" target="_blank">每月花1000欧，在南意大利能过怎样的生活？_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">意大利开超市赚钱吗？｜南意大利小企业主的一天 · 除了披萨和意大利面，意大利人还吃什么? 网红不会给你看的意大利美食：比你想象的更简单</div>
+                
             </div>
             
         </div>
         
         
         
-        <div class="news-section">
-            <div class="section-header"><h2>📋 其他动态</h2><span class="count">6条</span></div>
-            <ul class="simple-list">
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">⚡</span>
+                    <h2>即时零售</h2>
+                    <span class="count">1条</span>
+                    
+                </div>
+            </div>
             
-            <li>
-                <div><a href="https://www.36kr.com/p/3707150061351041" target="_blank" style="color:#333;text-decoration:none;">📰 京东上线百亿超市，向即时零售白牌供给宣战-36氪</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
+            <!-- 行业点评 -->
+            <div class="industry-review">
+                <div class="summary">即时零售是当前零售最热赛道，美团、京东、阿里激烈竞争</div>
+                <div class="focus-list">
+                    
+                    
+                    <span class="reason-item">💡 涉及企业：京东, 美团</span>
+                    
+                </div>
+            </div>
             
-            <li>
-                <div><a href="https://www.bilibili.com/video/BV1qBcEzAEJg/" target="_blank" style="color:#333;text-decoration:none;">📰 【收藏向】耗时3个月，全国 11 家超市大横评！山姆丨胖东来丨盒马丨永辉丨开市客丨沃尔玛……_哔哩哔...</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
+            <!-- 该行业新闻 -->
             
-            <li>
-                <div><a href="https://finance.sina.com.cn/tech/roll/2026-03-03/doc-inhpsict0874742.shtml" target="_blank" style="color:#333;text-decoration:none;">📰 女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利|山姆|盒马|零售_新浪科技_新浪...</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://www.36kr.com/p/3707150061351041" target="_blank">京东上线百亿超市，向即时零售白牌供给宣战-36氪</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">京东</span><span class="meta-tag company">美团</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：京东作为行业代表，其动向反映行业趋势；即时零售是当前零售热点赛道</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">要知道当下即时零售的全品类化已经是不可逆转的行业趋势，美团闪购、淘宝闪购等平台早已突破“应急”二字的局限，积极拓展日用百货、生鲜、美妆等品类，甚至开始向京东的核心优势3C品类发起冲击，试图实现“万物...</div>
+                
+            </div>
             
-            <li>
-                <div><a href="https://m.sohu.com/a/991897335_116132?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334" target="_blank" style="color:#333;text-decoration:none;">📰 女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利_搜狐网</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
-            
-            <li>
-                <div><a href="https://www.stheadline.com/zh-hans/exercise/3549314/%E6%97%A5%E6%9C%AC7-11%E7%88%86%E7%BA%A2%E5%A2%9E%E8%82%8C%E6%81%A9%E7%89%A9-%E9%AB%98%E8%9B%8B%E7%99%BD%E9%A5%AD%E5%9B%A21%E4%B8%AA%E6%8A%B54%E4%B8%AA-%E6%8A%97%E8%A1%B0%E8%80%81%E5%81%A5%E8%BA%AB%E4%BA%BA%E5%A3%AB%E6%AF%8F%E5%A4%A9%E8%A6%81%E5%90%83%E5%A4%9A%E5%B0%91%E8%9B%8B%E7%99%BD%E8%B4%A8%E6%89%8D%E8%B6%B3%E5%A4%9F" target="_blank" style="color:#333;text-decoration:none;">📰 日本7-11爆红增肌恩物 高蛋白饭团1个抵4个 抗衰老/健身人士每天要吃多少蛋白质才足够？</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
-            
-            <li>
-                <div><a href="https://www.bilibili.com/video/BV1xjPjznEvy/" target="_blank" style="color:#333;text-decoration:none;">📰 苹果超市，安卓服务！中国区山姆超市吃饭没座位，只能站着吃！遥遥领先美国山姆！_哔哩哔哩_bilibi...</a></div>
-                <div class="meta">📰 行业动态 | 一般性资讯</div>
-            </li>
-            
-            </ul>
         </div>
         
         
         
-        <div class="news-section">
-            <div class="section-header"><h2>🏢 今日热门企业</h2></div>
-            <div class="hot-companies"><span class="company-tag">山姆</span><span class="company-tag">盒马</span><span class="company-tag">全家</span><span class="company-tag">拼多多</span><span class="company-tag">京东</span><span class="company-tag">美团</span><span class="company-tag">永辉</span><span class="company-tag">沃尔玛</span></div>
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">🥬</span>
+                    <h2>生鲜零售</h2>
+                    <span class="count">3条</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 行业点评 -->
+            <div class="industry-review">
+                <div class="summary">生鲜零售进入精细化运营阶段，前置仓模式持续优化</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 开店动态活跃（1条）</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及企业：山姆, 盒马</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该行业新闻 -->
+            
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://finance.sina.com.cn/tech/roll/2026-03-03/doc-inhpsict0874742.shtml" target="_blank">女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利|山姆|盒马|零售_新浪科技_新浪网</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">盒马</span><span class="meta-tag company">山姆</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：盒马作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">实际上，「零售商业财经」发现，山姆所替换上架的国货零食，都是品牌专供，且在山姆的指导下进行了配方和生产工艺的改造。比如卫龙专供山姆的高纤牛肝菌魔芋，配料表上的大类只有4种；但市面常见的卫龙魔芋爽，至少使用了15种配料。</div>
+                
+            </div>
+            
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://m.sohu.com/a/991897335_116132?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334" target="_blank">女性零售高管的2026年：山姆难在平衡、奥乐齐急出沪、盒马困于盈利_搜狐网</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">盒马</span><span class="meta-tag company">山姆</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：盒马作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">实际上，「零售商业财经」发现，山姆所替换上架的国货零食，都是品牌专供，且在山姆的指导下进行了配方和生产工艺的改造。比如卫龙专供山姆的高纤牛肝菌魔芋，配料表上的大类只有4种；但市面常见的卫龙魔芋爽，...</div>
+                
+            </div>
+            
+            <div class="news-item p2 ">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/3705788513792387" target="_blank">2026年零售业真相：不是卷不动了，而是你根本没资格卷？-36氪</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📈 开店扩张</span>
+                    <span class="meta-tag company">盒马</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：市场扩张信号</div>
+                    <div class="reason">💡 原因：盒马作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">一位熟悉华南市场的零售观察者说，“盒马在广东不是在试水，而是摆出了一副‘必须拿下’的姿态。100家店的目标，若按全年计算，意味着平均每3-4天就要开出一家新店，这个速度在竞争如此激烈的市场，是相当激进的。”</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">📰</span>
+                    <h2>其他</h2>
+                    <span class="count">6条</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 行业点评 -->
+            <div class="industry-review">
+                <div class="summary">其他行业动态</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 资本动态频繁（1条）</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及企业：拼多多</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该行业新闻 -->
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/2550701259102592" target="_blank">消费并购买买买开始，谁会是中国的消费3g资本？-36氪</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">💵 融资并购</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：资本流向变化</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">当今天我们谈及消费投资时，资本的态度多半是：“谁还看消费啊。” · 和如此消极态度形成鲜明对比的是，谈消费并购的态度相对积极：一些消费品牌正在有意寻求并购对象，一些VC和PE也纷纷设立投行部，加大对并购板...</div>
+                
+            </div>
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://www.bannedbook.org/bnews/cnnews/20260303/2293007.html" target="_blank">深圳，真的撑不住了吗? - 禁闻网</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">当破产、跑路、订单流失与消费降级交织，欠薪基金的创纪录垫付或许只是冰山一角。当“有限垫付”成为越来越多打工者的依靠，这场寒潮还将持续多久？</div>
+                
+            </div>
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://www.lrzy8.com/lrzy/54902" target="_blank">2026 闭眼搞钱！拼多多 AI 虚拟店，月稳赚 1-2W！ – 懒人资源-懒人资源吧-wordpress-项目分享-项目分享网-创业交流-网创项目-网创经验-网创教程</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">拼多多</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：拼多多作为行业代表，其动向反映行业趋势</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">AI 电商黄金风口 普通人也轻松赚钱 小白可做 高收益：单店月纯利 1-2 万，日均 300-700 元，旺季翻倍，副业超主业 AI风口：AI定制化服务&amp;n&amp;hellip;</div>
+                
+            </div>
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/2578318209410439" target="_blank">降费，降费，又有巨头官宣-36氪</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">除了动漫游戏ETF，华泰柏瑞也同步下调了品牌消费ETF的管理费，该ETF的管理费自12 月27日起从0.50%调整为0.30%，托管费维持不变，综合费率从0.6%下调至0.4%。</div>
+                
+            </div>
+            
+            <div class="news-item  ">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/3705877122674818" target="_blank">20个人，估值超10亿美金，大厂接连疯抢-36氪</a>
+                </div>
+                <div class="news-meta">
+                    
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对行业的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">未来消费 · 智能涌现 · 未来城市 · 启动Power on · 36氪出海 · 36氪研究院 · 潮生TIDE · 36氪企服点评 · 36氪财经 · 职场bonus · 36碳 · 后浪研究所 · 暗涌Waves · 硬氪 · 氪睿研究院 · 媒体品牌 · 企业号 · 企服点评 ·</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <!-- 热门企业 -->
+        
+        <div class="industry-section">
+            <div class="industry-header">
+                <div class="left">
+                    <span class="icon">🏢</span>
+                    <h2>今日热门企业</h2>
+                </div>
+            </div>
+            <div class="hot-companies">
+                <span class="company-tag">山姆</span><span class="company-tag">盒马</span><span class="company-tag">沃尔玛</span><span class="company-tag">永辉</span><span class="company-tag">京东</span><span class="company-tag">美团</span><span class="company-tag">Costco</span><span class="company-tag">拼多多</span>
+            </div>
         </div>
         
         
         <div class="footer">
             <p>📧 零售日报 · 每日早8点自动推送</p>
-            <p>由 popeyeluo 的AI助理自动生成</p>
+            <p>由 popeyeluo 的AI助理自动生成 | 行业专家视角</p>
         </div>
     </div>
 </body>

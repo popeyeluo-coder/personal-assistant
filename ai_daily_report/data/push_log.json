@@ -26,6 +26,24 @@
       "wecom_ok": true,
       "news_count": 55,
       "error": null
+    },
+    {
+      "date": "2026-03-04",
+      "time": "14:02:35",
+      "success": true,
+      "email_ok": true,
+      "wecom_ok": false,
+      "news_count": 102,
+      "error": null
+    },
+    {
+      "date": "2026-03-04",
+      "time": "14:04:19",
+      "success": true,
+      "email_ok": true,
+      "wecom_ok": true,
+      "news_count": 60,
+      "error": null
     }
   ]
 }

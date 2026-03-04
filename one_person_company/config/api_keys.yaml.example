@@ -1,0 +1,65 @@
+# API密钥配置示例
+# 请复制此文件为 api_keys.yaml 并填入真实密钥
+# 注意：api_keys.yaml 已被 .gitignore 忽略
+
+# AI模型
+ai:
+  anthropic_api_key: "your_anthropic_api_key"
+  openai_api_key: "your_openai_api_key"
+
+# 搜索服务
+search:
+  brave_api_key: "your_brave_search_api_key"
+  serper_api_key: "your_serper_api_key"
+
+# 电商平台
+ecommerce:
+  # 抖音开放平台
+  douyin:
+    app_id: "your_douyin_app_id"
+    app_secret: "your_douyin_app_secret"
+    
+  # 微信视频号
+  wechat:
+    app_id: "your_wechat_app_id"
+    app_secret: "your_wechat_app_secret"
+    
+  # TikTok
+  tiktok:
+    client_key: "your_tiktok_client_key"
+    client_secret: "your_tiktok_client_secret"
+    
+  # 1688
+  alibaba:
+    app_key: "your_1688_app_key"
+    app_secret: "your_1688_app_secret"
+
+# 金融数据
+finance:
+  # 东方财富
+  eastmoney:
+    api_key: "your_eastmoney_api_key"
+    
+  # 富途
+  futu:
+    rsa_path: "./config/futu_rsa_key"
+    
+  # 雪球
+  xueqiu:
+    cookie: "your_xueqiu_cookie"
+    
+  # Alpha Vantage (美股数据)
+  alpha_vantage:
+    api_key: "your_alpha_vantage_api_key"
+
+# 邮件服务
+email:
+  smtp_server: "smtp.qq.com"
+  smtp_port: 465
+  username: "your_email@qq.com"
+  password: "your_email_auth_code"
+
+# GitHub (用于代码同步和Actions)
+github:
+  token: "your_github_token"
+  repo: "your_username/one_person_company"

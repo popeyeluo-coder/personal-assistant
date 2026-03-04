@@ -1,0 +1,178 @@
+# 一人公司全局配置
+# One Person Company Global Configuration
+
+company:
+  name: "PopeyeAI智能商业公司"
+  owner: "popeyeluo"
+  email: "709703094@qq.com"
+  timezone: "Asia/Shanghai"
+  
+# 业务模块配置
+business:
+  # 电商业务
+  ecommerce:
+    enabled: true
+    platforms:
+      - name: "抖音"
+        enabled: true
+        priority: 1
+        market: "china"
+      - name: "视频号"
+        enabled: true
+        priority: 2
+        market: "china"
+      - name: "tiktok"
+        enabled: true
+        priority: 3
+        market: "global"
+      - name: "淘宝"
+        enabled: false
+        priority: 4
+        market: "china"
+    
+    # 选品策略
+    product_strategy:
+      min_profit_margin: 0.30  # 最低毛利率30%
+      max_competition_level: 0.7  # 竞争激烈度上限
+      min_demand_score: 60  # 最低需求评分
+      categories:
+        - "家居用品"
+        - "美妆个护"
+        - "数码配件"
+        - "健康养生"
+        - "宠物用品"
+    
+    # 采购策略
+    purchase_strategy:
+      min_supplier_rating: 4.5  # 供应商最低评分
+      max_delivery_days: 7  # 最长发货天数
+      min_order_quantity: 10  # 最小起订量
+      platforms:
+        - "1688"
+        - "拼多多"
+        - "义乌购"
+        
+  # 金融业务
+  finance:
+    enabled: true
+    markets:
+      - name: "A股"
+        enabled: true
+        trading_hours: "09:30-15:00"
+        timezone: "Asia/Shanghai"
+      - name: "港股"
+        enabled: true
+        trading_hours: "09:30-16:00"
+        timezone: "Asia/Hong_Kong"
+      - name: "美股"
+        enabled: true
+        trading_hours: "09:30-16:00"
+        timezone: "America/New_York"
+    
+    # 投资策略
+    investment_strategy:
+      max_single_position: 0.20  # 单只股票最大仓位20%
+      max_total_position: 0.80  # 最大总仓位80%
+      stop_loss_rate: 0.08  # 止损线8%
+      take_profit_rate: 0.15  # 止盈线15%
+      
+    # 风险控制
+    risk_control:
+      daily_loss_limit: 0.05  # 日亏损限额5%
+      weekly_loss_limit: 0.10  # 周亏损限额10%
+      require_confirmation: true  # 大额操作需确认
+      confirmation_threshold: 10000  # 确认阈值(元)
+
+# Agent配置
+agents:
+  collaboration:
+    message_timeout: 30  # 消息超时时间(秒)
+    max_retry: 3  # 最大重试次数
+    
+  self_learning:
+    enabled: true
+    learning_interval: "weekly"  # 学习周期
+    data_retention_days: 90  # 数据保留天数
+    
+  self_iteration:
+    enabled: true
+    iteration_day: 1  # 每月迭代日
+    auto_update: false  # 自动更新(需人工确认)
+
+# 通知配置
+notification:
+  email:
+    enabled: true
+    smtp_server: "smtp.qq.com"
+    smtp_port: 465
+    sender: "709703094@qq.com"
+    receiver: "709703094@qq.com"
+    
+  # 通知触发条件
+  triggers:
+    - type: "daily_report"
+      time: "20:00"
+    - type: "urgent_alert"
+      conditions:
+        - "daily_loss > 3%"
+        - "system_error"
+        - "opportunity_found"
+
+# 调度配置
+scheduler:
+  # 每日任务
+  daily:
+    - task: "market_analysis"
+      time: "08:00"
+      agent: "analyst"
+    - task: "product_search"
+      time: "10:00"
+      agent: "product"
+    - task: "sales_check"
+      time: "14:00"
+      agent: "sales"
+    - task: "finance_review"
+      time: "16:00"
+      agent: "finance"
+    - task: "daily_summary"
+      time: "20:00"
+      agent: "pm"
+      
+  # 每周任务
+  weekly:
+    - task: "weekly_report"
+      day: "friday"
+      time: "18:00"
+      agent: "ceo"
+    - task: "strategy_review"
+      day: "sunday"
+      time: "20:00"
+      agent: "ceo"
+      
+  # 每月任务  
+  monthly:
+    - task: "self_iteration"
+      day: 1
+      time: "10:00"
+      agent: "pm"
+    - task: "performance_review"
+      day: 15
+      time: "10:00"
+      agent: "ceo"
+
+# 数据存储
+storage:
+  type: "local"  # local / cloud
+  path: "./data"
+  backup:
+    enabled: true
+    interval: "daily"
+    retention_days: 30
+
+# 日志配置
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/company.log"
+  max_size: "10MB"
+  backup_count: 5

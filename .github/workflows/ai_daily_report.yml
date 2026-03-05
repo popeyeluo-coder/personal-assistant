@@ -2,10 +2,10 @@ name: AI日报自动发送
 
 on:
   schedule:
-    # 每天北京时间8:00运行 (UTC 0:00)
-    - cron: '0 0 * * *'
-    # 每天北京时间8:30自检 (UTC 0:30)
-    - cron: '30 0 * * *'
+    # 每天北京时间18:00运行 (UTC 10:00)
+    - cron: '0 10 * * *'
+    # 每天北京时间18:30自检 (UTC 10:30)
+    - cron: '30 10 * * *'
   workflow_dispatch:
     inputs:
       action:
@@ -48,7 +48,7 @@ jobs:
           python main.py --send-now
 
   self_check:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'self-check' || github.event_name == 'schedule' && github.event.schedule == '30 0 * * *'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'self-check' || github.event_name == 'schedule' && github.event.schedule == '30 10 * * *'
     runs-on: ubuntu-latest
     
     steps:

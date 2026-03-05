@@ -1,0 +1,140 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-05",
+  "skill_name": "ai-expert-daily-report",
+  "user_preferences": {
+    "focus_areas": [
+      "LLM breakthroughs",
+      "AI safety research",
+      "Enterprise AI adoption",
+      "Chinese AI developments",
+      "Multimodal AI"
+    ],
+    "report_length": "comprehensive",
+    "insight_depth": "expert",
+    "risk_tolerance": "balanced",
+    "preferred_topics": [
+      "Foundation models",
+      "AI safety and alignment",
+      "Enterprise applications",
+      "Chinese AI ecosystem",
+      "Research breakthroughs"
+    ]
+  },
+  "search_keywords": {
+    "core_topics": [
+      "GPT-5",
+      "Claude",
+      "LLaMA",
+      "人工智能 突破",
+      "AI推理能力",
+      "AI对齐",
+      "Enterprise AI",
+      "中文AI",
+      "百度 ERNIE",
+      "阿里巴巴 通义千问",
+      "腾讯 混元"
+    ],
+    "secondary_topics": [
+      "Meta AI",
+      "Google DeepMind",
+      "OpenAI",
+      "Anthropic",
+      "AI应用",
+      "AI编程",
+      "AI安全",
+      "机器学习",
+      "深度学习"
+    ],
+    "priority_weights": {
+      "core_topics": 1.0,
+      "secondary_topics": 0.7,
+      "general_topics": 0.5
+    }
+  },
+  "performance_metrics": {
+    "user_satisfaction_score": 4.5,
+    "feedback_response_rate": 0.8,
+    "report_open_rate": 0.9,
+    "average_read_time": 300,
+    "content_relevance_score": 0.85
+  },
+  "iteration_history": [
+    {
+      "date": "2026-03-05",
+      "version": "1.0.0",
+      "changes": [
+        "Initial skill creation",
+        "Enhanced safety research coverage",
+        "Added enterprise AI metrics",
+        "Improved trend prediction accuracy"
+      ],
+      "feedback_summary": "Initial skill setup with comprehensive AI coverage"
+    }
+  ],
+  "optimization_schedule": {
+    "keyword_optimization": {
+      "enabled": true,
+      "frequency": "monthly",
+      "dates": [1, 15],
+      "last_optimization": "2026-03-05"
+    },
+    "feedback_analysis": {
+      "enabled": true,
+      "frequency": "weekly",
+      "days": ["Monday"],
+      "last_analysis": "2026-03-05"
+    },
+    "skill_update": {
+      "enabled": true,
+      "frequency": "as_needed",
+      "trigger_conditions": [
+        "user_satisfaction_score < 4.0",
+        "feedback_response_rate < 0.6",
+        "negative_feedback_count > 5"
+      ]
+    }
+  },
+  "feedback_categories": {
+    "content_relevance": {
+      "weight": 0.3,
+      "improvement_actions": [
+        "adjust_search_keywords",
+        "update_topic_weights",
+        "enhance_reference_materials"
+      ]
+    },
+    "insight_quality": {
+      "weight": 0.3,
+      "improvement_actions": [
+        "deepen_analysis_depth",
+        "add_expert_perspectives",
+        "improve_forward_looking_insights"
+      ]
+    },
+    "report_format": {
+      "weight": 0.15,
+      "improvement_actions": [
+        "optimize_report_structure",
+        "improve_visualization",
+        "enhance_readability"
+      ]
+    },
+    "timeliness": {
+      "weight": 0.15,
+      "improvement_actions": [
+        "optimize_data_collection_speed",
+        "reduce_processing_time",
+        "improve_delivery_speed"
+      ]
+    },
+    "specific_topics": {
+      "weight": 0.1,
+      "improvement_actions": [
+        "add_requested_topics",
+        "expand_topic_coverage",
+        "provide_deeper_analysis"
+      ]
+    }
+  }
+}

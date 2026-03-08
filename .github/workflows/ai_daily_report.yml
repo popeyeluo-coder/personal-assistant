@@ -48,7 +48,7 @@ jobs:
           python main.py --send-now
 
   self_check:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'self-check' || github.event_name == 'schedule' && github.event.schedule == '30 10 * * *'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'self-check' || github.event_name == 'schedule' && github.event.schedule == '30 0 * * *'
     runs-on: ubuntu-latest
     
     steps:

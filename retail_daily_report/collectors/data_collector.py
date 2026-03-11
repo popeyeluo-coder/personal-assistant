@@ -90,6 +90,18 @@ class RetailDataCollector:
         all_results.extend(trend_news)
         print(f"   ✓ 消费趋势: {len(trend_news)}条")
         
+        # 5. 零售科技（无人零售/智慧零售/数字化/AI等）
+        print("\n🔧 采集零售科技动态...")
+        tech_news = self._collect_retail_tech_news()
+        all_results.extend(tech_news)
+        print(f"   ✓ 零售科技: {len(tech_news)}条")
+        
+        # 6. 支付与营销
+        print("\n💳 采集支付与营销动态...")
+        payment_news = self._collect_payment_marketing_news()
+        all_results.extend(payment_news)
+        print(f"   ✓ 支付营销: {len(payment_news)}条")
+        
         # 去重
         print("\n🔄 执行去重处理...")
         unique_results = self._deduplicate(all_results)
@@ -130,7 +142,7 @@ class RetailDataCollector:
     
     def _collect_format_news(self) -> List[Dict]:
         results = []
-        for keyword in KEYWORDS["retail_formats"][:8]:
+        for keyword in KEYWORDS["retail_formats"]:
             items = self.brave_client.search(keyword, count=5)
             for item in items:
                 item["search_keyword"] = keyword
@@ -155,6 +167,28 @@ class RetailDataCollector:
             for item in items:
                 item["search_keyword"] = keyword
                 item["category"] = "trend"
+            results.extend(items)
+        return results
+    
+    def _collect_retail_tech_news(self) -> List[Dict]:
+        """采集零售科技动态（无人零售/智慧零售/数字化/AI等）"""
+        results = []
+        for keyword in KEYWORDS["retail_tech"]:
+            items = self.brave_client.search(keyword, count=5)
+            for item in items:
+                item["search_keyword"] = keyword
+                item["category"] = "tech"
+            results.extend(items)
+        return results
+    
+    def _collect_payment_marketing_news(self) -> List[Dict]:
+        """采集支付与营销动态"""
+        results = []
+        for keyword in KEYWORDS["payment_marketing"]:
+            items = self.brave_client.search(keyword, count=5)
+            for item in items:
+                item["search_keyword"] = keyword
+                item["category"] = "payment"
             results.extend(items)
         return results
     

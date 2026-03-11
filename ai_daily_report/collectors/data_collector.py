@@ -106,6 +106,12 @@ class AIDataCollector:
         all_results.extend(tech_news)
         print(f"   ✓ 技术新闻: {len(tech_news)}条")
         
+        # 5. 采集行业动态新闻（融资/收购/政策/AGI等）
+        print("\n📈 采集行业动态新闻...")
+        industry_news = self._collect_industry_news()
+        all_results.extend(industry_news)
+        print(f"   ✓ 行业动态: {len(industry_news)}条")
+        
         # 5. 去重处理
         print("\n🔄 执行去重处理...")
         unique_results = self._deduplicate(all_results)
@@ -173,11 +179,22 @@ class AIDataCollector:
     def _collect_tech_news(self) -> List[Dict]:
         """采集技术突破新闻"""
         results = []
-        for keyword in KEYWORDS["technology"][:5]:
+        for keyword in KEYWORDS["technology"]:
             items = self.brave_client.search(keyword, count=5)
             for item in items:
                 item["search_keyword"] = keyword
                 item["category"] = "technology"
+            results.extend(items)
+        return results
+    
+    def _collect_industry_news(self) -> List[Dict]:
+        """采集行业动态新闻（融资/收购/政策/AGI等）"""
+        results = []
+        for keyword in KEYWORDS["industry"]:
+            items = self.brave_client.search(keyword, count=5)
+            for item in items:
+                item["search_keyword"] = keyword
+                item["category"] = "industry"
             results.extend(items)
         return results
     

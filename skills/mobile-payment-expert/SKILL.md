@@ -1,320 +1,500 @@
 ---
 name: mobile-payment-expert
-description: This skill should be used when generating expert-level mobile payment industry reports, analyzing WeChat Pay, Alipay (including Alipay touch payment), Douyin Payment, and retail payment dynamics. It integrates global payment model knowledge, expert insights, and market intelligence to deliver comprehensive payment industry analysis with self-iteration capabilities based on user feedback.
+description: 移动支付专家Skill。当用户需要分析移动支付行业、支付技术、竞品动态、市场趋势等内容时应使用此skill。涵盖微信支付、支付宝、抖音支付、NFC支付、碰一下支付等主流支付方式和平台，提供专业的移动支付分析和报告生成能力。
 ---
 
-# Mobile Payment Expert Skill
+# 移动支付专家
 
-## Purpose
+## 概述
 
-Generate expert-level reports and analysis for the mobile payment industry by integrating global payment system knowledge, expert insights, and multi-source intelligence. This skill provides comprehensive analysis of WeChat Pay, Alipay, Douyin Payment, retail payment dynamics, market trends, and strategic insights with continuous self-iteration capabilities.
+本skill专注于移动支付领域的深度分析，涵盖支付技术、商业模式、市场竞争、监管政策、用户体验等多个维度。结合全网最新行业数据和趋势，为用户提供专业的移动支付行业洞察和决策支持。
 
-## When to Use
+## 核心能力
 
-Use this skill when:
-- Generating daily/weekly mobile payment industry reports
-- Analyzing payment technology trends and innovations
-- Tracking major payment platforms and their strategies
-- Monitoring retail payment dynamics and merchant adoption
-- Analyzing payment ecosystem evolution and competition
-- Providing strategic insights for payment businesses
-- Responding to user feedback to improve report quality
+### 1. 支付技术分析
 
-## Skill Usage Workflow
+#### 主要支付方式
+- **二维码支付**：支付宝扫码、微信扫码
+  - 优势：成本低、用户友好、适用广泛、便于推广
+  - 劣势：安全性相对较低、依赖网络、读取速度较慢
+  - 市场占比：约28%
 
-### 1. Data Collection and Integration
+- **NFC支付**：近场通信技术
+  - 优势：快速便捷、安全性高、读取快、适合高人流量场景
+  - 劣势：产业链长、设备要求高、推广成本高
+  - 市场占比：约7%
+  - 代表产品：支付宝"碰一下"支付
 
-Leverage the `collectors/data_collector.py` module to gather comprehensive payment intelligence:
+- **刷卡支付**：传统银行卡刷卡
+  - 市场占比：约23%
 
-```python
-from collectors.data_collector import collect_payment_news
+- **刷脸支付**：生物识别技术
+  - 优势：无感支付、体验极致
+  - 挑战：隐私安全、设备成本
 
-# Collect comprehensive payment news with expert filtering
-payment_data = collect_payment_news()
+#### 支付宝"碰一下"支付
+- **技术原理**：基于NFC（近场通信）技术
+- **核心特点**：
+  - 无需打开支付宝App
+  - 支持手机亮屏解锁状态下直接触碰
+  - 支付指令通过云端处理
+- **使用条件**：
+  - 手机支持NFC功能（Android需手动开启，iOS默认开启）
+  - 开通小额免密支付功能
+  - 必须解锁手机才能触发
+- **支付流程**：
+  1. 手机解锁状态下靠近商户NFC设备（2-5厘米）
+  2. 手机与收款设备进行NFC握手
+  3. 交换身份认证信息
+  4. 云端发送支付指令
+  5. 完成支付
+- **安全性**：硬件和软件双重加密，传输距离短
+
+### 2. 主流支付平台分析
+
+#### 支付宝
+- **市场地位**：
+  - 2024年Q1市场份额：54.5%（交易规模）
+  - 用户渗透率：83.66%（2024年）
+  - 非银行支付行业移动支付市场领先者
+
+- **核心优势**：
+  - 电商基因：依托阿里巴巴电商生态
+  - 金融工具属性：余额宝、花呗、借呗等金融产品
+  - 大额支付场景优势：月均支付金额是微信支付的2.3倍
+  - 跨境支付：国际市场布局领先
+  - 技术创新：率先推出"碰一下"支付
+
+- **主要场景**：
+  - 网络购物（淘宝、天猫）
+  - 生活缴费
+  - 理财投资
+  - 跨境消费
+  - 本地生活服务
+
+- **商业模式**：
+  - 支付手续费
+  - 金融产品分润
+  - 广告收入
+  - 数据服务
+
+#### 微信支付
+- **市场地位**：
+  - 2025年Q1市场份额：59.7%
+  - 用户渗透率：84.11%（2024年）
+  - 线下支付场景优势明显
+
+- **核心优势**：
+  - 社交基因：依托微信10亿+月活用户
+  - 社交场景无缝衔接：红包、转账
+  - 线下高频场景渗透率高：餐饮、零售渗透率达63.1%
+  - 日均使用频次：是支付宝的1.5倍
+  - 小程序生态：构建完整商业闭环
+
+- **主要场景**：
+  - 线下小额高频消费（餐饮、零售）
+  - 社交支付（红包、转账）
+  - 小程序内交易
+  - 公共服务
+  - 跨境支付（逐步布局）
+
+- **商业模式**：
+  - 支付手续费
+  - 商户服务费
+  - 金融产品导流
+  - 广告营销
+
+#### 抖音支付
+- **背景**：
+  - 字节跳动推出
+  - 依托抖音6亿日活用户
+  - 打造流量转化的完整商业闭环
+
+- **核心策略**：
+  - 生态闭环：抖音APP内购物结算
+  - 抖音月付：分期支付服务
+  - 流量变现：将用户注意力转化为金融收益
+  - 直播带货：强化支付基础设施
+
+- **优势**：
+  - 流量优势：短视频行业龙头
+  - 年轻用户群体：接受度高
+  - 内容与消费一体化
+
+- **挑战**：
+  - 市场份额：面临微信、支付宝双寡头压力
+  - 用户习惯：改变用户支付习惯需要时间
+  - 场景覆盖：需扩展支付场景
+
+#### 云闪付
+- **背景**：银联推出
+- **市场地位**：用户渗透率37.67%（2024年）
+- **优势**：
+  - 银行背书：资金安全性高
+  - 跨行整合：支持多家银行卡
+  - 政策支持：金融基础设施
+- **定位**：作为主流支付方式的重要补充
+
+### 3. 市场竞争格局
+
+#### 双寡头格局
+- **支付宝 + 微信支付**：市场份额超90%
+- **市场集中度**：高度集中
+- **竞争态势**：
+  - 份额拉锯：长期"五五开"
+  - 场景分化：支付宝线上强，微信线下强
+  - 创新竞争：技术和服务持续创新
+
+#### 市场规模（2024年数据）
+- **全球市场**：
+  - 注册账户：超21亿
+  - 月活账户：超5.14亿
+  - 交易笔数：约1080亿笔
+  - 交易金额：超1.68万亿美元
+
+- **中国市场**：
+  - 用户规模：超11亿
+  - 网络支付用户：占网民85.4%
+  - 第三方移动支付2024年Q4交易规模：76.47万亿元
+  - 银行非现金支付业务：4626.49亿笔，4805.77万亿元
+
+#### 地域差异
+- **一线城市**：
+  - 微信支付线下市场份额：63%
+  - 支付宝：37%
+- **小城市**：
+  - 微信支付市场份额是支付宝的9倍
+- **下沉市场**：
+  - 支付宝布局电商优势
+  - 微信支付社交渗透强
+
+### 4. 行业趋势与未来发展
+
+#### 技术趋势
+1. **无感支付**
+   - NFC、刷脸等技术
+   - 提升支付体验
+   - 减少支付步骤
+
+2. **AI赋能**
+   - 智能风控
+   - 个性化服务
+   - 预测性分析
+
+3. **区块链**
+   - 跨境支付优化
+   - 降低成本
+   - 提升透明度
+
+#### 市场趋势
+1. **场景多元化**
+   - 从消费到公共服务
+   - 从线上到线下融合
+   - 从国内到跨境
+
+2. **用户下沉**
+   - 三四线城市渗透
+   - 农村市场拓展
+   - 老年用户培养
+
+3. **生态化发展**
+   - 支付+金融
+   - 支付+生活
+   - 支付+社交
+
+#### 商业模式演进
+1. **从支付到生态**
+   - 不只是支付工具
+   - 构建金融生态圈
+   - 流量变现多元化
+
+2. **从交易到数据**
+   - 积累用户数据
+   - 精准营销
+   - 信用体系建设
+
+3. **从国内到国际**
+   - 跨境支付布局
+   - 国际化竞争
+   - 人民币国际化
+
+### 5. 监管环境分析
+
+#### 核心政策
+- **《非银行支付机构监督管理条例》**：
+  - 全面加强支付监管
+  - 强化监管能力建设
+  - 守住备付金监管红线
+
+- **监管重点**：
+  - 穿透式监管
+  - 涉诈涉赌"资金链"治理
+  - 虚拟货币监管
+  - 反垄断执法
+
+#### 监管要求
+- **合规底线**：
+  - "持牌不是护身符"
+  - "规模不是免检牌"
+  - 从严实施业务监管
+
+- **数据安全**：
+  - 个人信息保护
+  - 数据出境安全评估
+  - 网络安全审查
+
+#### 反垄断与公平竞争
+- 治理排他或"二选一"行为
+- 规范市场支配地位
+- 推动平台经济健康发展
+
+### 6. 安全与风控
+
+#### 主要安全风险
+1. **技术风险**
+   - 网络攻击
+   - 数据泄露
+   - 系统故障
+
+2. **欺诈风险**
+   - 电信诈骗
+   - 钓鱼网站
+   - 恶意软件
+
+3. **操作风险**
+   - 用户操作失误
+   - 设备丢失
+   - 账户被盗
+
+#### 安全措施
+1. **技术手段**
+   - 硬件加密
+   - 生物识别
+   - 大数据风控
+
+2. **管理措施**
+   - 实名认证
+   - 限额管理
+   - 风险提示
+
+3. **用户教育**
+   - 安全意识培养
+   - 防诈骗宣传
+   - 风险案例警示
+
+### 7. 用户体验分析
+
+#### 关键体验指标
+- **便捷性**：支付步骤、等待时间
+- **速度**：支付完成时间
+- **稳定性**：成功率、故障率
+- **安全性**：感知安全、实际安全
+
+#### 各平台体验对比
+- **支付宝**：工具属性强，功能全面
+- **微信支付**：社交融入，高频便捷
+- **抖音支付**：内容消费一体化
+- **云闪付**：银行背书，安全可靠
+
+#### 体验优化方向
+- 减少支付步骤
+- 提升支付速度
+- 增强安全保障
+- 个性化服务
+
+## 分析工作流
+
+### 第一步：明确分析目标
+确定分析维度：
+- 竞品分析
+- 技术分析
+- 市场分析
+- 用户分析
+- 趋势分析
+
+### 第二步：数据收集
+- **行业数据**：市场规模、增长率、市场份额
+- **竞品数据**：功能、体验、商业模式
+- **用户数据**：行为、偏好、满意度
+- **政策数据**：法规、监管动态
+
+### 第三步：多维度分析
+1. **技术维度**：支付方式、技术创新
+2. **商业维度**：商业模式、盈利模式
+3. **市场维度**：竞争格局、市场份额
+4. **用户维度**：用户体验、用户行为
+5. **政策维度**：监管环境、合规要求
+
+### 第四步：综合研判
+- 识别关键驱动因素
+- 分析主要风险挑战
+- 预测未来发展趋势
+- 提出战略建议
+
+## 日报Agent优化建议
+
+### 报告结构
+```
+【移动支付日报】
+
+一、行业动态
+   - 政策更新
+   - 市场数据
+   - 重要事件
+
+二、竞品动态
+   - 支付宝
+   - 微信支付
+   - 抖音支付
+   - 其他平台
+
+三、技术更新
+   - 新技术发布
+   - 产品功能更新
+   - 技术创新
+
+四、用户数据
+   - 用户规模
+   - 使用行为
+   - 市场渗透
+
+五、风险提示
+   - 安全事件
+   - 监管风险
+   - 市场风险
+
+六、趋势洞察
+   - 短期趋势
+   - 中期趋势
+   - 长期趋势
 ```
 
-The collector automatically:
-- Searches WeChat Pay updates, features, and merchant programs
-- Monitors Alipay innovations including "touch payment" (碰一下)
-- Tracks Douyin Payment developments and social commerce integration
-- Captures retail payment dynamics and merchant adoption trends
-- Filters high-value content using relevance scoring
+### 重点关注
+1. **实时性**：关注最新动态
+2. **准确性**：数据来源可靠
+3. **深度**：不只罗列，要有分析
+4. **前瞻性**：预测未来趋势
+5. **可操作性**：提供决策建议
 
-### 2. Expert-Level Analysis
+### 数据源推荐
+- 官方发布：央行、银联、支付清算协会
+- 行业机构：艾瑞咨询、艾媒咨询、易观
+- 企业财报：支付宝、微信、字节跳动
+- 媒体报道：36氪、虎嗅、财新、新浪财经
+- 国际报告：GSMA、麦肯锡、普华永道
 
-Apply the `analyzers/data_analyzer.py` module for deep analysis:
+## 常见分析场景
 
-```python
-from analyzers.data_analyzer import analyze_payment_news
+### 场景1：竞品对比分析
+**用户请求**："对比支付宝和微信支付的优劣势"
+**分析内容**：
+- 市场份额对比
+- 用户群体差异
+- 场景覆盖对比
+- 商业模式差异
+- 体验评价
+- 发展趋势
 
-# Analyze collected news with expert perspective
-analysis_results = analyze_payment_news(payment_data)
-```
+### 场景2：新技术分析
+**用户请求**："分析支付宝碰一下支付的前景"
+**分析内容**：
+- 技术原理
+- 使用体验
+- 安全性评估
+- 推广难度
+- 市场接受度
+- 对行业影响
 
-The analyzer provides:
-- **Technology Innovation Analysis**: NFC, QR code, biometric payment trends
-- **Market Dynamics**: Payment platform competition, market share shifts
-- **Merchant Ecosystem**: Adoption rates, integration challenges, success stories
-- **Consumer Behavior**: Payment preferences, adoption barriers, satisfaction
-- **Regulatory Landscape**: Payment regulations, policy changes, compliance
+### 场景3：市场趋势预测
+**用户请求**："预测2025年移动支付发展趋势"
+**分析内容**：
+- 技术趋势
+- 市场趋势
+- 政策趋势
+- 竞争格局变化
+- 用户行为变化
 
-### 3. Expert Insight Generation
+### 场景4：政策影响分析
+**用户请求**："分析新监管条例对行业的影响"
+**分析内容**：
+- 政策要点解读
+- 对各平台影响
+- 合规成本
+- 市场格局变化
+- 应对建议
 
-Use expert knowledge from `references/` to enhance analysis:
+### 场景5：用户体验优化
+**用户请求**："如何提升移动支付用户体验"
+**分析内容**：
+- 当前体验痛点
+- 最佳实践对比
+- 技术方案
+- 流程优化
+- 安全与便捷平衡
 
-- `references/wechat_pay.md`: WeChat Pay features, ecosystem, merchant solutions
-- `references/alipay.md`: Alipay platform, touch payment technology, innovations
-- `references/douyin_payment.md`: Douyin Payment, social commerce integration
-- `references/retail_payment.md`: Retail payment dynamics, merchant adoption, POS systems
-- `references/payment_trends.md`: Emerging trends, future predictions, global comparison
+## 参考资料
 
-Load reference materials dynamically when analyzing specific topics:
-```python
-import os
-from pathlib import Path
+### 行业报告
+- GSMA《2025年全球移动支付行业现状报告》
+- 艾瑞咨询《中国第三方支付行业数据发布报告》
+- 艾媒咨询《中国移动支付市场研究报告》
 
-def load_reference(topic):
-    ref_path = Path(__file__).parent / "references" / f"{topic}.md"
-    if ref_path.exists():
-        with open(ref_path, 'r', encoding='utf-8') as f:
-            return f.read()
-    return ""
-```
+### 官方数据
+- 中国人民银行支付结算工作会议
+- 中国支付清算协会数据
+- 各支付平台财报
 
-### 4. Global Payment System Integration
+### 技术资料
+- NFC技术白皮书
+- 二维码支付标准
+- 生物识别支付规范
 
-Integrate insights from global payment systems and best practices:
+## 注意事项
 
-- **China**: WeChat Pay, Alipay, Douyin Payment, UnionPay
-- **Global**: Apple Pay, Google Pay, Samsung Pay, PayPal
-- **Southeast Asia**: GrabPay, GoPay, Dana, MoMo
-- **Europe**: Swish, Blik, iDEAL, Revolut
-- **Emerging Markets**: Mobile money, QR payment adoption
+### 信息准确性
+- 多方验证数据
+- 标注数据来源
+- 区分事实和观点
+- 及时更新信息
 
-### 5. Report Generation
+### 客观中立
+- 避免主观臆断
+- 平衡多方观点
+- 承认不确定性
+- 明确分析局限
 
-Generate comprehensive reports using `reports/report_generator.py`:
+### 风险意识
+- 提醒投资风险
+- 提示监管风险
+- 标注市场不确定性
+- 不做投资建议
 
-```python
-from reports.report_generator import generate_payment_report
+### 持续学习
+- 关注行业动态
+- 更新技术知识
+- 学习分析方法
+- 提升专业能力
 
-# Generate expert-level payment report
-html_report = generate_payment_report(analysis_results)
-```
+## 自我迭代
 
-Report structure:
-- **Executive Summary**: Key highlights and strategic insights
-- **Platform Updates**: New features, product launches, strategic initiatives
-- **Technology Innovations**: New payment technologies, UX improvements
-- **Market Dynamics**: Competition, partnerships, market share changes
-- **Retail Insights**: Merchant adoption, success stories, challenges
-- **Regulatory Updates**: Policy changes, compliance requirements
-- **Expert Insights**: Forward-looking analysis and recommendations
+### 定期更新
+- 每月更新市场数据
+- 每季更新技术动态
+- 每年更新行业趋势
+- 及时更新政策变化
 
-### 6. Self-Iteration and Evolution
+### 用户反馈
+- 收集分析质量反馈
+- 优化分析方法
+- 改进报告结构
+- 提升用户体验
 
-Implement continuous improvement based on user feedback:
+### 能力提升
+- 学习新技术
+- 研究新案例
+- 参与行业交流
+- 提升分析深度
 
-#### Feedback Collection
+## 免责声明
 
-After sending reports, collect user feedback:
-- Email replies and comments
-- WeChat work group discussions
-- Direct feedback channels
-- Payment industry professional networks
-
-#### Feedback Analysis
-
-Analyze feedback to identify improvement areas:
-
-```python
-def analyze_feedback(feedback_data):
-    """Analyze user feedback to improve report quality"""
-    
-    # Categorize feedback types
-    feedback_categories = {
-        "content_relevance": [],
-        "insight_quality": [],
-        "report_format": [],
-        "timeliness": [],
-        "specific_platforms": []
-    }
-    
-    # Extract actionable insights
-    improvements = []
-    
-    # Update skill configuration
-    update_skill_config(improvements)
-    
-    return improvements
-```
-
-#### Skill Configuration Updates
-
-Maintain `config/skill_config.json` to track skill evolution:
-
-```json
-{
-  "version": "1.0.0",
-  "last_updated": "2026-03-05",
-  "user_preferences": {
-    "focus_areas": [
-      "WeChat Pay merchant solutions",
-      "Alipay touch payment adoption",
-      "Retail payment innovation",
-      "Social commerce payment"
-    ],
-    "report_length": "comprehensive",
-    "insight_depth": "expert",
-    "platform_coverage": ["wechat", "alipay", "douyin", "retail"]
-  },
-  "performance_metrics": {
-    "user_satisfaction_score": 4.6,
-    "feedback_response_rate": 0.85,
-    "report_open_rate": 0.92
-  },
-  "iteration_history": [
-    {
-      "date": "2026-03-05",
-      "changes": [
-        "Enhanced Alipay touch payment coverage",
-        "Added retail merchant case studies",
-        "Improved social commerce payment analysis"
-      ],
-      "feedback_summary": "Users requested more merchant adoption details"
-    }
-  ]
-}
-
-#### Automatic Keyword Optimization
-
-Implement monthly keyword optimization (1st and 15th of each month):
-
-```python
-def optimize_keywords():
-    """Automatically optimize search keywords based on report performance"""
-    
-    # Analyze which topics generate most engagement
-    high_engagement_topics = analyze_report_engagement()
-    
-    # Update search keywords in collectors/data_collector.py
-    update_search_keywords(high_engagement_topics)
-    
-    # Adjust relevance scoring weights
-    adjust_scoring_weights()
-    
-    # Log optimization results
-    log_optimization_changes()
-```
-
-### 7. Multi-Channel Distribution
-
-Distribute reports through multiple channels:
-
-```python
-from utils.email_sender import send_report
-from utils.wecom_sender import send_wecom_report
-
-# Email distribution
-send_report(html_report, today_str)
-
-# WeChat Work distribution
-send_wecom_report(analysis_results, today_str)
-```
-
-## Expert Knowledge Integration
-
-### Payment Platform Ecosystem
-
-#### WeChat Pay (微信支付)
-- **Core Features**: QR code payments, Mini Program payments, in-app payments
-- **Merchant Solutions**: Smart POS, merchant management, marketing tools
-- **Ecosystem**: Mini Programs, WeChat Pay Score (微信支付分), WeChat Pay Plus
-- **Recent Updates**: New merchant incentives, improved UX, enhanced security
-
-#### Alipay (支付宝)
-- **Core Features**: QR payments, Alipay+, merchant services
-- **Touch Payment (碰一下)**: NFC-based contactless payment
-- **Ecosystem**: Alipay Mini Programs, Ant Forest, Yu'e Bao
-- **Recent Updates**: Touch payment expansion, merchant subsidies, new use cases
-
-#### Douyin Payment (抖音支付)
-- **Core Features**: In-app payments, social commerce integration
-- **Ecosystem**: Livestream shopping, short-video commerce
-- **Recent Updates**: Enhanced merchant tools, improved UX, new payment features
-
-### Retail Payment Dynamics
-
-#### Merchant Adoption Patterns
-- **QR Code Payments**: Universal adoption across retail
-- **NFC Payments**: Growing adoption, especially in urban areas
-- **Touch Payment**: Emerging technology, early adoption phase
-- **Social Commerce**: Rapid growth, especially in younger demographics
-
-#### Integration Challenges
-- **POS Integration**: Legacy systems vs. modern solutions
-- **Cost Structure**: Transaction fees, merchant fees
-- **User Education**: Teaching new payment methods
-- **Competition**: Multiple payment options, user fragmentation
-
-### Technology Landscape
-
-#### Payment Technologies
-- **QR Code**: Universal, low-cost, widely adopted
-- **NFC**: Contactless, faster, requires hardware upgrades
-- **Biometric**: Fingerprint, face recognition, voice payments
-- **Touch Payment (碰一下)**: NFC-based, tap-to-pay experience
-
-#### Innovation Trends
-1. **Seamless Payments**: Reduced friction, one-tap payments
-2. **Multi-Modal**: Combining QR, NFC, biometric for flexibility
-3. **AI-Powered**: Personalized offers, fraud detection, analytics
-4. **Omnichannel**: Consistent experience across online and offline
-
-### Competitive Dynamics
-
-#### Platform Competition
-- **WeChat Pay vs. Alipay**: Dominant duopoly, constant innovation
-- **Douyin Payment**: Growing social commerce presence
-- **Traditional Banks**: Digital transformation, new payment solutions
-- **International Players**: Apple Pay, Google Pay in China
-
-#### Market Share Dynamics
-- **WeChat Pay**: ~40-45% market share
-- **Alipay**: ~45-50% market share
-- **Others**: ~5-10% (Douyin, UnionPay, etc.)
-
-## Best Practices
-
-1. **Balance Breadth and Depth**: Cover all platforms while diving deep into key topics
-2. **Merchant-Centric**: Focus on merchant adoption, challenges, and success stories
-3. **Technology Focus**: Explain technical innovations in accessible terms
-4. **Market Intelligence**: Provide actionable insights for business decisions
-5. **Data-Driven**: Use metrics and data to support analysis
-6. **User Feedback**: Continuously improve based on reader feedback
-7. **Timeliness**: Highlight breaking news and rapid developments
-
-## Performance Monitoring
-
-Track key metrics:
-- **User Engagement**: Report open rates, read time, feedback frequency
-- **Content Quality**: User satisfaction scores, perceived relevance
-- **Timeliness**: Report delivery time vs. planned time
-- **Accuracy**: Fact-checking results, prediction accuracy
-- **Improvement Rate**: Skill iteration effectiveness over time
-
-## Emergency Protocols
-
-Handle special situations:
-- **Major Platform Updates**: Issue immediate alerts on significant feature launches
-- **Regulatory Changes**: Alert on important policy or regulation changes
-- **Security Incidents**: Prioritize security vulnerabilities or breaches
-- **Market Disruptions**: Alert on major market shifts or platform crises
-
-## Contact and Support
-
-For skill-related issues or feedback:
-- Email: 709703094@qq.com
-- GitHub: https://github.com/popeyeluo-coder/personal-assistant
-- Skill Version: 1.0.0
-- Last Updated: 2026-03-05
+本skill提供的所有分析和建议仅供参考，不构成任何投资建议或商业决策依据。市场数据可能存在延迟或误差，市场情况可能随时变化。使用者应基于自身判断独立决策，并对决策结果负责。

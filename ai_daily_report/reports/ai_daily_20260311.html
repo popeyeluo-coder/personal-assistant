@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI日报 - 2026年03月11日</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 30px; border-radius: 16px; margin-bottom: 20px; text-align: center;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header .date { font-size: 16px; opacity: 0.9; }
+        .header .stats { display: flex; justify-content: center; gap: 40px; margin-top: 15px; }
+        .header .stat-item { text-align: center; }
+        .header .stat-value { font-size: 28px; font-weight: bold; }
+        .header .stat-label { font-size: 12px; opacity: 0.8; }
+        
+        /* 整体点评卡片 */
+        .overview-card {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 16px; padding: 24px; margin-bottom: 20px; color: white;
+        }
+        .overview-card .title { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .overview-card .risk-badge { font-size: 12px; padding: 4px 12px; border-radius: 12px; background: rgba(255,255,255,0.2); }
+        .overview-card .overview-text { font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+        
+        .review-section { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .review-box { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 15px; }
+        .review-box .box-title { font-size: 13px; font-weight: bold; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .review-box .box-item { font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .review-box .box-item:last-child { border-bottom: none; }
+        
+        /* 产业链卡片 */
+        .chain-section { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .chain-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
+        .chain-header .left { display: flex; align-items: center; gap: 10px; }
+        .chain-header .icon { font-size: 24px; }
+        .chain-header h2 { font-size: 18px; color: #333; }
+        .chain-header .count { background: #667eea; color: white; font-size: 12px; padding: 3px 10px; border-radius: 10px; }
+        .chain-header .p1-badge { background: #dc3545; color: white; font-size: 11px; padding: 2px 8px; border-radius: 8px; margin-left: 8px; }
+        
+        .chain-review { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        .chain-review .summary { font-size: 14px; color: #333; margin-bottom: 12px; font-weight: 500; }
+        .chain-review .focus-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chain-review .focus-item { font-size: 12px; background: #e3f2fd; color: #1976d2; padding: 4px 10px; border-radius: 6px; }
+        .chain-review .reason-item { font-size: 12px; background: #fff3e0; color: #e65100; padding: 4px 10px; border-radius: 6px; }
+        
+        /* 新闻卡片 */
+        .news-item { padding: 15px; border-radius: 10px; margin-bottom: 12px; background: #f8f9fa; border-left: 4px solid #667eea; transition: all 0.2s; position: relative; }
+        .news-item:hover { transform: translateX(3px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .news-item.p1 { border-left-color: #dc3545; background: #fff5f5; }
+        .news-item.p2 { border-left-color: #fd7e14; background: #fff8f0; }
+        .news-item.new::after { content: "新"; position: absolute; top: -5px; right: 10px; background: #dc3545; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; }
+        
+        .news-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+        .news-title a { color: #333; text-decoration: none; }
+        .news-title a:hover { color: #667eea; }
+        
+        .news-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .meta-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+        .meta-tag.priority { background: #dc3545; color: white; }
+        .meta-tag.priority.p2 { background: #fd7e14; }
+        .meta-tag.chain { background: #667eea; color: white; }
+        .meta-tag.event { background: #6c757d; color: white; }
+        .meta-tag.company { background: #28a745; color: white; }
+        
+        .news-comment { font-size: 13px; color: #444; padding: 10px 12px; background: white; border-radius: 8px; margin-top: 10px; }
+        .news-comment .focus { color: #1976d2; font-weight: 500; }
+        .news-comment .reason { color: #666; font-size: 12px; margin-top: 5px; }
+        
+        .news-summary { font-size: 13px; color: #666; margin-top: 8px; }
+        
+        .hot-companies { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .company-tag { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 6px 14px; border-radius: 15px; font-size: 12px; }
+        
+        .footer { text-align: center; padding: 25px; color: #999; font-size: 12px; }
+        
+        @media (max-width: 600px) {
+            .review-section { grid-template-columns: 1fr; }
+            .header .stats { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>🤖 AI日报</h1>
+            <div class="date">2026年03月11日 周三</div>
+            <div class="stats">
+                <div class="stat-item"><div class="stat-value">55</div><div class="stat-label">今日新闻</div></div>
+                <div class="stat-item"><div class="stat-value">34</div><div class="stat-label">高优</div></div>
+                <div class="stat-item"><div class="stat-value">21</div><div class="stat-label">重要</div></div>
+                <div class="stat-item"><div class="stat-value">50</div><div class="stat-label">新信息</div></div>
+            </div>
+        </div>
+        
+        <!-- 整体点评 -->
+        
+        <div class="overview-card">
+            <div class="title">
+                <span>📊 今日整体点评</span>
+                <span class="risk-badge" style="background: #dc3545;">高关注度</span>
+            </div>
+            <div class="overview-text">🔥 今日AI领域动态活跃：发现34条高优信息，21条重要信息。热点集中在基础模型, 应用层。</div>
+            
+            <div class="review-section">
+                
+                <div class="review-box">
+                    <div class="box-title">🎯 您需要关注</div>
+                    
+                    <div class="box-item">大模型领域动态频繁，关注模型能力进展</div>
+                    
+                    <div class="box-item">算力/芯片有新动态，关注供给变化</div>
+                    
+                    <div class="box-item">AI应用活跃，关注产品创新和用户价值</div>
+                    
+                    <div class="box-item">重点关注：Midjourney, OpenAI, Amazon</div>
+                    
+                    <div class="box-item">多个新品发布，AI产品迭代加速</div>
+                    
+                </div>
+                
+                
+                
+                <div class="review-box">
+                    <div class="box-title">💡 原因分析</div>
+                    
+                    <div class="box-item">基础模型是AI产业核心，影响整个生态</div>
+                    
+                    <div class="box-item">算力是AI发展瓶颈，芯片格局影响深远</div>
+                    
+                    <div class="box-item">应用层是AI价值变现的关键环节</div>
+                    
+                    <div class="box-item">头部企业动向引领行业发展方向</div>
+                    
+                </div>
+                
+            </div>
+            
+            
+            <div class="review-box" style="margin-top: 15px;">
+                <div class="box-title">✅ 今日建议</div>
+                
+                <div class="box-item">→ ⚡ 优先阅读34条高优新闻，把握行业脉搏</div>
+                
+                <div class="box-item">→ 🧠 关注大模型进展，评估对业务的影响</div>
+                
+                <div class="box-item">→ 🎯 关注Midjourney最新动态</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        <!-- 按产业链展示 -->
+        
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">🧠</span>
+                    <h2>基础模型</h2>
+                    <span class="count">29条</span>
+                    <span class="p1-badge">25条高优</span>
+                </div>
+            </div>
+            
+            <!-- 产业链点评 -->
+            <div class="chain-review">
+                <div class="summary">大模型是AI产业核心，OpenAI/Anthropic/国内厂商激烈竞争</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 有25条高优信息，建议重点关注</span>
+                    
+                    <span class="focus-item">🎯 有新品发布动态（6条）</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及重大技术突破或战略调整</span>
+                    
+                    <span class="reason-item">💡 涉及企业：阿里, Google DeepMind, Mistral</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该产业链新闻 -->
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1SYWke9E2Q/" target="_blank">国产赛博菩萨硅基流动SiliconCloud：最佳免费 llm大模型 api 提供商_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">🚀 新品发布</span>
+                    <span class="meta-tag company">OpenAI</span><span class="meta-tag company">MiniMax</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：模型能力进展，可能影响下游应用、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：OpenAI是AI行业关键玩家，动向值得关注；涉及重大技术突破或战略调整；基础模型是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">根本用不完！全球 16 家官方免费大模型 API ：Gemini-2.5-pro | o3 | DeepSeek——2506最新重置版 ... 智谱 GLM Coding Plan 套餐现已开启退款通道；千问团开源 Qwen3.5 小尺寸模型系列【AI 早报 2026-03-03】 ... Google 更新 Gemini 3 Deep Think；MiniMax 正式发布 M2.5；OpenAI...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1WDAozxEEB/" target="_blank">【AI模型尝鲜】千问Qwen3.5多模态大模型开源 小尺寸本地部署教程_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📦 开源动态</span>
+                    <span class="meta-tag company">阿里</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：模型能力进展，可能影响下游应用、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：阿里是AI行业关键玩家，动向值得关注；涉及重大技术突破或战略调整；基础模型是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">各位元宵节快乐~欢迎来到AI模型尝鲜系列，本期聚焦阿里最近开源的千问Qwen3.5多模态推理大模型，参数覆盖0.8B–397B，采用统一架构原生理解图片、视频等多模态信息，无需外挂视觉模块，并支持256K超长上下文和201种语言及方言。带领大家通过Ollama本地部署与测试，揭晓7道大模型易错题的测试结果 开源地址：https://github.com/QwenLM/Qwen3.5 Ollama模...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://toolnavs.com/article/1166-ollama-fa-bu-v-0-1-7-7-ben-di-da-mo-xing-yun-xing-gong-ju-ji-xu-qiang-hua-wen-di" target="_blank">Ollama发布v0.17.7：本地大模型运行工具继续强化稳定性与部署体验 - AI工具导航</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">🚀 新品发布</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：模型能力进展，可能影响下游应用、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：基础模型是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Ollama 发布 v0.17.7 版本，官方通过 GitHub Release 公布最新更新。作为本地大模型运行与分发的重要工具，Ollama 的版本迭代通常直接关系到模型拉取、运行兼容性和本地部署体验，因此在开发者与本地 AI 用户群体中具有很高关注度。从使用场景看，Ollama 的核心价值在于让本地运行大模型变得</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1qCPCz2Eji/" target="_blank">【全10集】全B站最详细“OpenClaw+微信+飞书+钉钉”教程，3小时快速实现自动化运行，手把手教你从0到1本地部署！小白适用！_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">🚀 新品发布</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：模型能力进展，可能影响下游应用、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：基础模型是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">AI大模型系统课程 · 1.1万 211 · 展开 · 明日方舟十字路口版本PV发布 · 小窗 · 客服 ·</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1i9PmzxEX1/" target="_blank">未来终极软件形态构想-AI大模型+本体模型+IM聊天统一入口_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">🚀 新品发布</span>
+                    <span class="meta-tag company">华为</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：模型能力进展，可能影响下游应用、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：华为是AI行业关键玩家，动向值得关注；基础模型是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">GPT大语言模型-RAG增强检索和自训练微调 · 13:22 · ChatBI或ChatDB，当前还没发现一个真正能打的 · 04:35 · 千灯万盏，不如心灯一盏 · 02:23 · 华为发布盘古大模型3.0-通用模型+行业模型结合才是王道 · 06:42 · AI数字人直播和自媒体视频-是否还是好的创业赛道？ ·</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">📱</span>
+                    <h2>应用层</h2>
+                    <span class="count">16条</span>
+                    <span class="p1-badge">7条高优</span>
+                </div>
+            </div>
+            
+            <!-- 产业链点评 -->
+            <div class="chain-review">
+                <div class="summary">AI应用百花齐放，关注用户价值和商业化进展</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 有7条高优信息，建议重点关注</span>
+                    
+                    <span class="focus-item">🎯 有新品发布动态（1条）</span>
+                    
+                    <span class="focus-item">🎯 有技术突破报道（1条）</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及重大技术突破或战略调整</span>
+                    
+                    <span class="reason-item">💡 涉及企业：Midjourney, OpenAI, Anthropic</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该产业链新闻 -->
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1jbcvz5EzJ/" target="_blank">【Seedance2.0豆包免费使用教程】豆包Seedance2.0凭啥登顶？全能参考高级使用技巧和爆款提示词课件白给_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">🚀 新品发布</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：产品形态创新，用户价值变化、新产品/技术，评估应用价值</div>
+                    <div class="reason">💡 原因：涉及重大技术突破或战略调整</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">【即梦AI教程】全108集！2026最新发布！即梦AI5.0独家保姆级教程来啦！AI绘画+图生视频+脚本+剪辑完整流程详解！设计师必学的首款AI，即学即用！ ... 【Seedance2.0豆包免费使用教程】豆包Seedance2.0凭啥登顶？全能参考高级使用技巧和爆款提示词课件白给 ... 【SD秋叶整合包】吊打 即梦/sora2,本地部署、炸裂！免费无限制AI生图/视频软件！超变态的图像视频生...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://intelligenttools.co/tools/openai-sora" target="_blank">OpenAI Sora - AI model that creates realistic and imaginative video from text</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">OpenAI</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：产品形态创新，用户价值变化</div>
+                    <div class="reason">💡 原因：OpenAI是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">OpenAI Sora: AI model that creates realistic and imaginative video from text. Honest reviews. Long-Form Video Generation. Limited beta access, pricing to be ...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1hhBFB1EzE/" target="_blank">【即梦4.5教程】目前B站最新最全的即梦AI4.5保姆级教程！新手必看！！AI视提示词+AI绘画+图生视频+完整流程详解！七天就能从小白变大神！少走99%的弯路_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Midjourney</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：产品形态创新，用户价值变化</div>
+                    <div class="reason">💡 原因：Midjourney是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">B站首推！2025最新版AIGC从入门到精通教程(Midjourney+StableDiffusion+ChatGPT)存下吧！很难找全的！学完少走99%的弯路 ... 【即梦AI教程】全68集！2026最新教程来啦！即梦AI4.1独家保姆级教程来啦！AI绘画+图生视频+脚本+剪辑完整流程...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1Ds4y1e7ZB/" target="_blank">30分钟零基础掌握ControlNet！绝对是你看过最好懂的控制网原理分析 | 基本操作、插件安装与5大模型应用 · Stable Diffusion教程_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Midjourney</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：产品形态创新，用户价值变化</div>
+                    <div class="reason">💡 原因：Midjourney是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">【全108集】目前B站最全的AI绘画网课SD+ComfyUI+Midjourney保姆级教程，2025最新版！包含所有干货！七天就能从小白到大神！学完直接变现！</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.technobezz.com/news/microsoft-launches-99-monthly-ai-software-bundle-for-enterprise-users" target="_blank">Microsoft Launches $99 Monthly AI Software Bundle for Enterprise Users | Technobezz</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Anthropic</span><span class="meta-tag company">Microsoft</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：产品形态创新，用户价值变化</div>
+                    <div class="reason">💡 原因：Anthropic是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Central to Microsoft&#x27;s announcement is Copilot Cowork, a feature built in close collaboration with Anthropic that allows AI models to use other software tools.</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">🔧</span>
+                    <h2>硬件/芯片</h2>
+                    <span class="count">2条</span>
+                    <span class="p1-badge">2条高优</span>
+                </div>
+            </div>
+            
+            <!-- 产业链点评 -->
+            <div class="chain-review">
+                <div class="summary">AI芯片供需紧张，NVIDIA主导市场，国产替代加速</div>
+                <div class="focus-list">
+                    
+                    <span class="focus-item">🎯 有2条高优信息，建议重点关注</span>
+                    
+                    
+                    <span class="reason-item">💡 涉及重大技术突破或战略调整</span>
+                    
+                    <span class="reason-item">💡 涉及企业：OpenAI, Microsoft, Mistral</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该产业链新闻 -->
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://blogs.microsoft.com/blog/2026/03/09/introducing-the-first-frontier-suite-built-on-intelligence-trust/" target="_blank">Introducing the First Frontier Suite built on Intelligence + Trust - The Official Microsoft Blog</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">OpenAI</span><span class="meta-tag company">Microsoft</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：算力供给变化，影响AI发展瓶颈</div>
+                    <div class="reason">💡 原因：OpenAI是AI行业关键玩家，动向值得关注；硬件/芯片是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Today Microsoft is announcing: Wave 3 of Microsoft 365 Copilot Expanded model diversity with Claude and next-gen OpenAI models available today General availability of Agent 365 on May 1 for $15 per us...</div>
+                
+            </div>
+            
+            <div class="news-item p1 new">
+                <div class="news-title">
+                    <a href="https://www.analyticsinsight.net/news/mistral-ai-signs-defense-deal-with-france-as-europe-pushes-for-sovereign-ai" target="_blank">Mistral AI Signs Defense Deal with France as Europe Pushes for Sovereign AI</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority">P1 高优</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Mistral</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：算力供给变化，影响AI发展瓶颈</div>
+                    <div class="reason">💡 原因：Mistral是AI行业关键玩家，动向值得关注；硬件/芯片是AI产业链核心环节</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Europe&#x27;s increasing demand for self-sufficient artificial intelligence systems received new momentum. The French startup Mistral AI has secured a framework agre</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">📚</span>
+                    <h2>学术研究</h2>
+                    <span class="count">1条</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 产业链点评 -->
+            <div class="chain-review">
+                <div class="summary">学术研究动态</div>
+                <div class="focus-list">
+                    
+                    
+                </div>
+            </div>
+            
+            <!-- 该产业链新闻 -->
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://36kr.com/p/3304457565559298" target="_blank">AI十周找到不治之症潜在新疗法，核心流程完全自主驱动-36氪</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对AI领域的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">无特效疗法、无法根治的疾病，现在被「AI科学家」发现了潜在新疗法。 · 核心流程完全由AI驱动，人类研究员仅执行了实验室实验和最终论文撰写的那种。</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">🛠️</span>
+                    <h2>开发工具/平台</h2>
+                    <span class="count">7条</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 产业链点评 -->
+            <div class="chain-review">
+                <div class="summary">AI开发工具链成熟，Agent框架成新热点</div>
+                <div class="focus-list">
+                    
+                    
+                    <span class="reason-item">💡 涉及企业：Amazon</span>
+                    
+                </div>
+            </div>
+            
+            <!-- 该产业链新闻 -->
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://www.bilibili.com/video/BV1cLbHz9ECi/" target="_blank">大模型训练：手把手带你从零开始训练自己的大模型，从理论到训练实操全流程~大模型|LLM_哔哩哔哩_bilibili</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：保持对AI领域的常规关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">视频配套文档+大模型系统学习资源备好了有需要的流77, 视频播放量 1289、弹幕量 89、点赞数 25、投硬币枚数 15、收藏人数 46、转发人数 11, 视频作者 Ai大模型研究所, 作者简介 ，相关视频：【2026年AI大模型】10小时学：Prompt、RAG、Agent、MCP、大模型微调从入门到项目实战（完整版）学会可做LLM项目，Qwen3-8B模型微调：手把手带你从零训练特定领域大模...</div>
+                
+            </div>
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://www.cnbc.com/2026/03/10/amazon-wins-court-order-to-block-perplexitys-ai-shopping-agent.html" target="_blank">Amazon wins court order to block Perplexity's AI shopping agent</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Amazon</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：Amazon是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Amazon sued Perplexity in November, alleging the startup took steps to &quot;conceal&quot; its AI agents so they could continue to scrape the online retailer&#x27;s website without its approval. Perpl...</div>
+                
+            </div>
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://www.bloomberg.com/news/articles/2026-03-10/amazon-wins-court-order-blocking-perplexity-s-ai-shopping-bots" target="_blank">Amazon Wins Court Order to Halt Perplexity’s AI Shopping Bots on Marketplace - Bloomberg</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Amazon</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：Amazon是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Perplexity AI Inc. must for now stop using its Comet web browser agent to make purchases on behalf of shoppers from Amazon.com Inc.’s online marketplace, a court ruled this week.</div>
+                
+            </div>
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://www.reuters.com/legal/litigation/amazon-wins-order-blocking-access-perplexitys-ai-shopping-agent-2026-03-10/" target="_blank">Amazon wins order blocking access for Perplexity's AI shopping 'agent' | Reuters</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Amazon</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：Amazon是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">U.S. ‌District Judge Maxine Chesney said on Monday, opens new tab that Amazon can likely prove that Perplexity&#x27;s tool, which utilizes automation to place online shopping orders, unlawfully access...</div>
+                
+            </div>
+            
+            <div class="news-item p2 new">
+                <div class="news-title">
+                    <a href="https://searchengineland.com/perplexity-ai-shopping-bot-amazon-court-471283" target="_blank">Court restricts Perplexity’s AI shopping bot from accessing Amazon</a>
+                </div>
+                <div class="news-meta">
+                    <span class="meta-tag priority p2">P2 重要</span>
+                    <span class="meta-tag event">📋 行业动态</span>
+                    <span class="meta-tag company">Amazon</span>
+                </div>
+                
+                <!-- 新闻点评 -->
+                
+                <div class="news-comment">
+                    <div class="focus">🎯 关注点：AI行业动态跟踪</div>
+                    <div class="reason">💡 原因：Amazon是AI行业关键玩家，动向值得关注</div>
+                </div>
+                
+                
+                
+                <div class="news-summary">Perplexity AI must stop using its Comet browser agent to make purchases on Amazon.</div>
+                
+            </div>
+            
+        </div>
+        
+        
+        
+        <!-- 热门公司 -->
+        
+        <div class="chain-section">
+            <div class="chain-header">
+                <div class="left">
+                    <span class="icon">🏢</span>
+                    <h2>今日热门公司</h2>
+                </div>
+            </div>
+            <div class="hot-companies">
+                <span class="company-tag">Midjourney</span><span class="company-tag">OpenAI</span><span class="company-tag">Amazon</span><span class="company-tag">Mistral</span><span class="company-tag">Microsoft</span><span class="company-tag">Google DeepMind</span><span class="company-tag">阿里</span><span class="company-tag">MiniMax</span><span class="company-tag">Meta AI</span><span class="company-tag">华为</span>
+            </div>
+        </div>
+        
+        
+        <div class="footer">
+            <p>📧 AI日报 · 每日早8点自动推送</p>
+            <p>由 popeyeluo 的AI助理自动生成 | 产业链视角</p>
+        </div>
+    </div>
+</body>
+</html>

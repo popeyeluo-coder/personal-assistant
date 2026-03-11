@@ -100,13 +100,83 @@ from reports.report_generator import generate_ai_report
 html_report = generate_ai_report(analysis_results)
 ```
 
-Report structure:
-- **Executive Summary**: Key highlights and strategic insights
-- **Technology Breakthroughs**: Latest technical advancements
-- **Industry Dynamics**: Market movements and company news
-- **Application Highlights**: Notable AI deployments
-- **Expert Insights**: Forward-looking analysis and recommendations
-- **Risk Alerts**: Potential risks and mitigation strategies
+**CRITICAL: Structured Output Requirements**
+
+The report MUST follow this exact structure:
+
+#### Part 1: Expert Executive Summary (专家点评小结)
+
+```markdown
+## 专家点评小结
+
+[3-5 sentences summarizing key insights from today's news]
+
+**重点关注：**
+- [Point 1]: What to watch for
+- [Point 2]: What to watch for
+- [Point 3]: What to watch for
+
+**深度思考：**
+- [Insight 1]: What deserves deep consideration
+- [Insight 2]: What deserves deep consideration
+```
+
+#### Part 2: Categorized News with Category Summaries (分类新闻+小结)
+
+For each news category (e.g., Technology Breakthroughs, Industry Dynamics, etc.):
+
+```markdown
+## [Category Name] - 分类小结
+
+[2-3 sentences summarizing key insights from this category]
+
+**可以留意：**
+- [Point 1]: Specific attention areas
+- [Point 2]: Specific attention areas
+
+**值得思考：**
+- [Insight 1]: Thought-provoking aspects
+
+---
+
+[News Item 1]
+[News Item 2]
+[News Item 3]
+...
+```
+
+#### Part 3: Entrepreneurial Recommendations (创业建议)
+
+```markdown
+## 创业方向建议
+
+基于今日 AI 行业动态，作为行业创业者，我建议您关注以下创业方向：
+
+### 短期机会（1-3个月）
+1. **[方向名称]**: [具体描述 + 市场机会 + 为什么现在做]
+
+### 中期机会（3-12个月）
+1. **[方向名称]**: [具体描述 + 市场机会 + 为什么现在做]
+
+### 长期机会（1-3年）
+1. **[方向名称]**: [具体描述 + 市场机会 + 为什么现在做]
+
+### 关键成功要素
+- [Factor 1]
+- [Factor 2]
+- [Factor 3]
+
+### 风险提示
+- [Risk 1]
+- [Risk 2]
+```
+
+**Output Quality Requirements:**
+1. All summaries must be expert-level insights, not just listing news
+2. Each category summary must have "可以留意" and "值得思考" sections
+3. Entrepreneurial recommendations must be specific, actionable, and time-bound
+4. All news must be from the last 3 days (strictly enforced)
+5. Report must be concise yet comprehensive (aim for 1500-2000 words)
 
 ### 6. Self-Iteration and Evolution
 
@@ -280,5 +350,19 @@ Handle special situations:
 For skill-related issues or feedback:
 - Email: 709703094@qq.com
 - GitHub: https://github.com/popeyeluo-coder/personal-assistant
-- Skill Version: 1.0.0
-- Last Updated: 2026-03-05
+- Skill Version: 2.0.0
+- Last Updated: 2026-03-06
+
+## Version History
+
+### v2.0.0 (2026-03-06)
+- ✅ Added strict 3-day time filtering for all news
+- ✅ Implemented structured output with expert summaries
+- ✅ Added category-level summaries with "可以留意" and "值得思考"
+- ✅ Added entrepreneurial recommendations section (short/medium/long-term)
+- ✅ Enhanced output quality requirements
+
+### v1.0.0 (2026-03-05)
+- Initial release
+- Basic AI industry reporting
+- Self-iteration capabilities

@@ -15,11 +15,27 @@ from config import KEY_COMPANIES
 
 
 class AIDataAnalyzer:
-    """AI日报数据分析器（专业版）"""
+    """AI日报数据分析器（专业版 + OpenClaw增强）"""
     
-    def __init__(self):
+    def __init__(self, use_openclaw: bool = True):
         self._init_industry_chain()
         self._init_importance_rules()
+        self.use_openclaw = use_openclaw
+        self.openclaw_client = None
+        
+        if use_openclaw:
+            try:
+                from utils.openclaw_client import OpenClawClient
+                self.openclaw_client = OpenClawClient()
+                status = self.openclaw_client.check_gateway_status()
+                if status["status"] == "running":
+                    print("   ✓ OpenClaw 已连接，将使用AI增强分析")
+                else:
+                    print(f"   ⚠️ OpenClaw 未运行: {status['message']}")
+                    self.openclaw_client = None
+            except Exception as e:
+                print(f"   ⚠️ OpenClaw 加载失败: {e}")
+                self.openclaw_client = None
     
     def _init_industry_chain(self):
         """初始化AI产业链分类体系"""
@@ -164,7 +180,7 @@ class AIDataAnalyzer:
         
         print(f"   ✓ 分析完成，共{len(analyzed_items)}条")
         
-        return {
+        result = {
             "items": analyzed_items,
             "chain_groups": chain_groups,
             "overall_review": overall_review,
@@ -173,6 +189,24 @@ class AIDataAnalyzer:
             "expert_overview": overall_review,  # 兼容
             "total_items": len(analyzed_items),
         }
+        
+        # OpenClaw 增强分析
+        if self.openclaw_client and len(analyzed_items) > 0:
+            try:
+                print("   🦞 OpenClaw 增强分析中...")
+                openclaw_insights = self._openclaw_enhance(analyzed_items, overall_review)
+                if openclaw_insights:
+                    result["openclaw_insights"] = openclaw_insights
+                    # 合并到整体点评中
+                    if "ai_summary" in openclaw_insights:
+                        result["overall_review"]["ai_summary"] = openclaw_insights["ai_summary"]
+                    if "ai_recommendations" in openclaw_insights:
+                        result["overall_review"]["ai_recommendations"] = openclaw_insights["ai_recommendations"]
+                    print("   ✓ OpenClaw 增强完成")
+            except Exception as e:
+                print(f"   ⚠️ OpenClaw 增强失败: {e}")
+        
+        return result
     
     def _classify_chain(self, item: Dict) -> Dict:
         """产业链分类"""
@@ -511,6 +545,52 @@ class AIDataAnalyzer:
             "new_count": sum(1 for item in items if item.get("is_new", False)),
             "old_count": sum(1 for item in items if not item.get("is_new", False)),
         }
+    
+    def _openclaw_enhance(self, items: List[Dict], overall_review: Dict) -> Dict:
+        """使用 OpenClaw 增强分析"""
+        if not self.openclaw_client:
+            return {}
+        
+        # 准备新闻摘要（只取高优和中优）
+        priority_items = [i for i in items if i.get("priority") in ["P1", "P2"]][:15]
+        if not priority_items:
+            priority_items = items[:10]
+        
+        news_summary = "\n".join([
+            f"- {i.get('title', '')} ({i.get('chain', {}).get('name', '')})"
+            for i in priority_items
+        ])
+        
+        # 获取整体点评
+        existing_overview = overall_review.get("overview", "")
+        top_chains = ", ".join(overall_review.get("top_chains", [])[:3])
+        top_companies = ", ".join(overall_review.get("top_companies", [])[:3])
+        
+        prompt = f"""作为AI行业资深分析师，请基于今日AI行业新闻动态，提供简洁专业的分析总结。
+
+今日AI新闻概要（{len(items)}条）：
+{news_summary}
+
+热门产业链：{top_chains}
+活跃企业：{top_companies}
+
+请提供：
+1. 今日AI行业核心观点（2-3句话，突出最重要的趋势或事件）
+2. 给从业者的建议（1-2条具体可执行的建议）
+
+注意：直接给出分析内容，不要使用JSON格式，不要重复新闻标题。语言简洁有力。"""
+
+        response = self.openclaw_client.chat_simple(prompt, timeout=60)
+        
+        if response:
+            return {
+                "ai_summary": response,
+                "ai_recommendations": [],  # 可以进一步解析
+                "model": "openclaw/deepseek-chat",
+                "enhanced": True
+            }
+        
+        return {}
 
 
 def analyze_ai_news(collected_data: List[Dict]) -> Dict:

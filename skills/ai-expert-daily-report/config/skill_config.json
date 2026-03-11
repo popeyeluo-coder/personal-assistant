@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-03-05",
+  "version": "2.0.0",
+  "last_updated": "2026-03-06",
   "skill_name": "ai-expert-daily-report",
   "user_preferences": {
     "focus_areas": [
@@ -19,7 +19,10 @@
       "Enterprise applications",
       "Chinese AI ecosystem",
       "Research breakthroughs"
-    ]
+    ],
+    "time_filter_days": 3,
+    "structured_output": true,
+    "entrepreneurial_insights": true
   },
   "search_keywords": {
     "core_topics": [
@@ -60,6 +63,18 @@
     "content_relevance_score": 0.85
   },
   "iteration_history": [
+    {
+      "date": "2026-03-06",
+      "version": "2.0.0",
+      "changes": [
+        "Added strict 3-day time filtering",
+        "Implemented structured output with expert summaries",
+        "Added category-level summaries",
+        "Added entrepreneurial recommendations",
+        "Enhanced output quality requirements"
+      ],
+      "feedback_summary": "Enhanced with structured output and time-based filtering"
+    },
     {
       "date": "2026-03-05",
       "version": "1.0.0",
